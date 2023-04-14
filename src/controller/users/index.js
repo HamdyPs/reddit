@@ -53,7 +53,7 @@ const signin = (req, res) => {
     if(!isMatched){
       throw customError(401,{msg: 'please enter correct password'})
     }else{
-      return signToken(username,password,req.userId)
+      return signToken(username,req.userId)
     }
   }).then((token)=>{
     return res.cookie("token", token).end()
