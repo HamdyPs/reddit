@@ -1,5 +1,5 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostQuery,deletePostQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
   const { title, description, photo } = req.body;
   const { user } = req;
@@ -23,4 +23,13 @@ const getPosts = (req, res) => {
     })
 }
 
-module.exports = { createPost, getUserPosts, getPosts }
+const deletePost = (req, res) => {
+  const postId = req.params.postId
+  console.log(postId);
+  deletePostQuery(postId)
+  .then(()=> res.status(200).json({
+    message: 'your post has deleted succssfully'
+  }))
+}
+
+module.exports = { createPost, getUserPosts, getPosts,deletePost }
