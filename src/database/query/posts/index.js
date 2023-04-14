@@ -1,13 +1,13 @@
 const connection = require('../../config');
 
 
-const createPostQuery = (userData) => {
+const createPostQuery = (userData,mytoken) => {
   const {title, description, photo} = userData;
-
+  const userId = mytoken.providerID
   const sql = {
     text: `INSERT INTO posts (title, description, photo, user_id)
-     VALUES ($1 , $2, $3, 1)`,
-    values: [title, description, photo]
+     VALUES ($1 , $2, $3, $4)`,
+    values: [title, description, photo,userId]
   }
 
   return connection.query(sql)
@@ -15,6 +15,8 @@ const createPostQuery = (userData) => {
 
 
 const getPostQuery = (mytoken) => {
+  const userId = mytoken.providerID
+
   const sql = {
     text: `select 
             p.title,
@@ -27,7 +29,7 @@ const getPostQuery = (mytoken) => {
           join users u
             on u.id = p.user_id
           where u.id = $1`,
-    values: [mytoken.id]
+    values: [userId]
   };
   return connection.query(sql);
 };
