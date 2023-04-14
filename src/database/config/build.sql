@@ -18,7 +18,7 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL UNIQUE,
+  title VARCHAR(255) NOT NULL,
   description TEXT,
   photo VARCHAR(255),
   user_id INTEGER NOT NULL,
