@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
           }
       })
   } else {
-      res.json("/users/signinuser")
+      res.json("error")
   }
 }
 
