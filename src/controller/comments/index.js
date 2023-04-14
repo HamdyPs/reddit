@@ -1,7 +1,7 @@
 const {createCommentQuery} = require('../../database/query/comments')
 
 const createComment = (req, res) => {
-  const description = req.body;
+  const description = req.body.description;
   const userId = req.params.userId;
   const postId = req.params.postId;
 

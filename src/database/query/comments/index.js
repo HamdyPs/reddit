@@ -2,7 +2,7 @@ const connection = require('../../config');
 
 
 const createCommentQuery = (description, userId, postId) => {
-
+  console.log(description);
   const sql = {
     text: `INSERT INTO comments ( description, user_id, post_id)
      VALUES ($1 , $2, $3 )`,
