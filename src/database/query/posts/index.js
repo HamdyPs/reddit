@@ -38,6 +38,15 @@ join users u
   };
   return connection.query(sql);
 };
+const deletePostQuery = (postId) => {
 
 
-module.exports = { createPostQuery, getPostQuery }
+  const sql = {
+    text: `DELETE FROM posts where posts.id = $1`,
+    values: [postId]
+  }
+  return connection.query(sql);
+
+}
+
+module.exports = { createPostQuery, getPostQuery, deletePostQuery }
