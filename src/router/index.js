@@ -5,7 +5,7 @@ const postsRouter = require('./posts');
 const router = require('express').Router();
 
 router.use('/users', userRouter)
-router.use('/users', postsRouter)
+router.use('/posts', postsRouter)
 // router.use(clientError);
 // router.use(serverError);
 

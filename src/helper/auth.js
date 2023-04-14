@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
           if (err) {
               res.json({ message: "Error" })
           } else {
-              req.mytoken = decoded;
+              req.user = decoded;
               next()
           }
       })
