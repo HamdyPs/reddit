@@ -1,8 +1,13 @@
 const commentsRouter = require('express').Router();
-const { createComment,addVoteToComment } = require('../../controller/comments')
+const { createComment,addVoteToComment, getVotePost } = require('../../controller/comments')
 const auth = require('../../helper/auth');
 
 commentsRouter.post('/:postId',auth, createComment)
-commentsRouter.get('/:postId',auth, addVoteToComment)
+//still need to fix vote issue, stop error when add vote to post which is not exist
+
+commentsRouter.get('/user/:postId',auth, addVoteToComment)
+//still need to fix vote issue, make user make 1 vote 
+
+commentsRouter.get('/:postId',auth, getVotePost)
 
 module.exports = commentsRouter;

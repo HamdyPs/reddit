@@ -41,6 +41,7 @@ join users u
 
 const getPostQuery = (postId) => {
   let query = `select 
+  p.id,
   p.title,
   p.description,
   p.photo,
@@ -56,15 +57,14 @@ join users u
 
   const sql = {
     text: query,
-    values:[postId]
+    values: [postId]
   };
 
 
   return connection.query(sql);
 };
 
-const commentQuery = (postId)=>{
-  console.log(postId);
+const commentQuery = (postId) => {
   let commentsQuery = `select
   c.description,
   c.user_id,
@@ -76,13 +76,12 @@ const commentQuery = (postId)=>{
   where c.post_id = $1`
   const commentSql = {
     text: commentsQuery,
-    values:[postId]
+    values: [postId]
   }
   return connection.query(commentSql)
 }
+
 const deletePostQuery = (postId) => {
-
-
   const sql = {
     text: `DELETE FROM posts where posts.id = $1`,
     values: [postId]
@@ -91,4 +90,4 @@ const deletePostQuery = (postId) => {
 
 }
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery,getPostQuery,commentQuery }
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery }

@@ -13,7 +13,6 @@ const createCommentQuery = (description, userId, postId) => {
   return connection.query(sql)
 };
 const addVoteQuery = ( userId, postId) => {
-  console.log(userId, postId);
   const sql = {
     text: `INSERT INTO votes
      (user_id, post_id)
@@ -24,5 +23,22 @@ const addVoteQuery = ( userId, postId) => {
   return connection.query(sql)
 };
 
+const votePostQuery = (postId) => {
+  let voteQuery = `select
+  u.username,
+  u.photo,
+  v.user_id,
+  v.post_id
+    from votes v
+    join users u
+    on v.user_id = u.id
+    where v.post_id = $1`
+  const voteSql = {
+    text: voteQuery,
+    values: [postId]
+  }
+  return connection.query(voteSql)
+}
 
-module.exports = { createCommentQuery, addVoteQuery }
+
+module.exports = { createCommentQuery, addVoteQuery, votePostQuery }
