@@ -1,5 +1,5 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery,commentQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
   const { title, description, photo } = req.body;
   const { user } = req;
@@ -20,20 +20,20 @@ const getPost = (req, res) => {
 
   getPostQuery(postId)
     .then((postData) => {
-      commentQuery(postId).then((commentsData)=>{
-        if(postData.rowCount > 0){
+      commentQuery(postId).then((commentsData) => {
+        if (postData.rowCount > 0) {
           postData.rows[0].comments = commentsData.rows
           res.status(200).json(postData.rows[0])
-        }else{
+        } else {
           res.status(404).json('post doesnt exist')
         }
-      
+
       })
-      .catch((error)=>{
-        console.log(error);
-      })
+        .catch((error) => {
+          console.log(error);
+        })
     })
-    .catch((error)=>{
+    .catch((error) => {
       console.log(error);
     })
 }
