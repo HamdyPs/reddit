@@ -11,7 +11,7 @@
 <body>
   <div class="container" id="container">
     <div class="form-container sign-up-container">
-      <form action="#">
+      <form id="signUpForm">
         <h1>Create Account</h1>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -19,19 +19,19 @@
           <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
         </div>
         <span>or use your email for registration</span>
-        <input type="text" placeholder="username" />
-        <input type="email" placeholder="email" />
-        <input type="password" placeholder="password" />
-        <input type="photo" placeholder="ur_photo" />
-        <input type="date" placeholder="date" />
-        <input type="country" placeholder="country" />
-        <input type="number" placeholder="phone-number" />
-        <input type="text" placeholder="address" />
+        <input name="username" type="text" placeholder="username" />
+        <input name="email" type="email" placeholder="email" />
+        <input name="password" type="password" placeholder="password" />
+        <input name="photo" type="photo" placeholder="ur_photo" />
+        <input name="date" type="text" placeholder="date" />
+        <input name="country" type="country" placeholder="country" />
+        <input name="phone" type="number" placeholder="phone-number" />
+        <input name="address" type="text" placeholder="address" />
         <button>Sign Up</button>
-      </form>
+      </form type="submit">
     </div>
     <div class="form-container sign-in-container">
-      <form action="#">
+      <form id="signinForm">
         <h1>Sign in</h1>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -39,17 +39,17 @@
           <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
         </div>
         <span>or use your account</span>
-        <input type="text" placeholder="username" />
-        <input type="password" placeholder="Password" />
+        <input name="username" type="text" placeholder="username" />
+        <input name="password" type="password" placeholder="Password" />
         <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <button type="submit">Sign In</button>
       </form>
     </div>
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
-          <h1>Welcome Back!</h1>
-          <p>To keep connected with us please login with your personal info</p>
+          <h1>Welcome to our website</h1>
+          <p class="signUpMsg">please sign up to be able to join us</p>
           <button class="ghost" id="signIn">Sign In</button>
         </div>
         <div class="overlay-panel overlay-right">
