@@ -9,7 +9,8 @@ const hashed = (password, callback) => {
   bcrypt.hash(password, 10, callback)
 }
 const signUp = (req, res) => {
-  const { username, email, password, photo, date, country, role, phone, address } = req.body;
+  const { username, email, password, photo, date, country, phone, address } = req.body;
+  const role = 'user'
   const { error, value } = signUpSchema.validateAsync({ username, email, password, photo, date, country, role, phone, address }, { abortEarly: false })
   if (error) {
     return res.status(200).json({
@@ -26,7 +27,7 @@ const signUp = (req, res) => {
       .then(() => res.status(201).json({
         error: false,
         data: {
-          data: 'your account has been created succssfully'
+          data: 'your account has been created succssfully, now u can logIn'
         }
       }))
       .catch((error) => {
