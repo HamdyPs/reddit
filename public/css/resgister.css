@@ -14,6 +14,8 @@ body {
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
 	margin: -20px 0 50px;
+	position: relative;
+	overflow: hidden;
 }
 
 h1 {
@@ -249,4 +251,49 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+.wholetoast{
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	position: absolute;
+	top: 70px;
+	left: 10px;
+	width: 350px;
+}
+
+.toast{
+	padding: 10px;
+	box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.22);
+	visibility: hidden;
+	transform: translateX(-300px);
+	transition: 0.5s ease-in-out;
+}
+
+.para-toast{
+	border-width: 50%;
+	width: fit-content;
+	padding: 10px 0px;
+	position: relative;
+	transition: 0.5s ease-in-out;
+}
+
+.para-toast::before{
+	content: '';
+	position: absolute;
+	height: 2px;
+	bottom: 0;
+	left: 0;
+	background-color: red;
+	animation: timer 4s ease-in-out;
+}
+
+@keyframes timer {
+	0%{
+		width: 100%;
+	}
+	100%{
+		width: 0%;
+	}
 }
