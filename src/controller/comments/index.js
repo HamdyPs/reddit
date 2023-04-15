@@ -1,11 +1,12 @@
-const {createCommentQuery} = require('../../database/query/comments')
+const { createCommentQuery } = require('../../database/query/comments')
 
 const createComment = (req, res) => {
   const description = req.body.description;
-  const userId = req.params.userId;
+  const { user } = req;
   const postId = req.params.postId;
 
-  createCommentQuery(description,userId,postId).then(result=>res.json('your comment has created succssfully'))
+  createCommentQuery(description, user.providerID, postId).then(() => res.json('your comment has created succssfully'))
 }
 
-module.exports = {createComment}
+
+module.exports = { createComment }
