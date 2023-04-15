@@ -58,10 +58,12 @@ const signin = (req, res) => {
         return signToken(username, req.userId)
       }
     }).then((token) => {
-      return res.cookie("token", token).end()
+      return res.status(200).cookie("token", token).json({
+        message: token
+      })
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error,'adfadfadf');
       res.json({
         status: error.status,
         massage: error.massage
