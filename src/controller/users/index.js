@@ -1,5 +1,6 @@
-const  customError  = require('../../helper/customError')
-const {signUpUserQuery,signInUserQuery} = require('../../database/query/users')
+const customError = require('../../helper/customError')
+const { signUpUserQuery, signInUserQuery } = require('../../database/query/users')
+const {join} = require('path')
 // const customError = require('../../helper/customError')
 const { signUpSchema, signinSchema } = require('../../schema/users.schema')
 const bcrypt = require('bcryptjs')
@@ -37,34 +38,39 @@ const signUp = (req, res) => {
 }
 
 const signin = (req, res) => {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
 
-  signinSchema.validateAsync({username, password}, { abortEarly: false })
-  .then((data)=> signInUserQuery(data))
-  .then(({rows})=>{
-    if(rows.length){
-      req.userId = rows[0].id
-      return bcrypt.compare(password,rows[0].password)
-    }else{
-      throw customError(401,{msg: 'please create account first'})
-    }
-  })
-  .then((isMatched)=>{
-    if(!isMatched){
-      throw customError(401,{msg: 'please enter correct password'})
-    }else{
-      return signToken(username,req.userId)
-    }
-  }).then((token)=>{
-    return res.cookie("token", token).end()
-  })
-  .catch((error) => {
-    console.log(error);
-    res.json({
+  signinSchema.validateAsync({ username, password }, { abortEarly: false })
+    .then((data) => signInUserQuery(data))
+    .then(({ rows }) => {
+      if (rows.length) {
+        req.userId = rows[0].id
+        return bcrypt.compare(password, rows[0].password)
+      } else {
+        throw customError(401, { msg: 'please create account first' })
+      }
+    })
+    .then((isMatched) => {
+      if (!isMatched) {
+        throw customError(401, { msg: 'please enter correct password' })
+      } else {
+        return signToken(username, req.userId)
+      }
+    }).then((token) => {
+      return res.cookie("token", token).end()
+    })
+    .catch((error) => {
+      console.log(error);
+      res.json({
         status: error.status,
         massage: error.massage
+      })
     })
-})
 }
 
-module.exports = { signUp, signin }
+const getSignUpPage = (req, res) =>{
+  res.sendFile(join(__dirname, '../../../public/components/client/resgister.html'))
+}
+
+
+module.exports = { signUp, signin,getSignUpPage }
