@@ -1,4 +1,4 @@
-const { createCommentQuery, addVoteQuery, votePostQuery } = require('../../database/query/comments')
+const { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery } = require('../../database/query/comments')
 
 const createComment = (req, res) => {
   const description = req.body.description;
@@ -15,8 +15,8 @@ const addVoteToComment = (req, res) => {
     console.log(data);
     if (data.rowCount > 0) {
       res.status(200).json('u have been liked this post')
-      
-    }else{
+
+    } else {
       res.status(404).json('there is no post to like')
 
     }
@@ -27,20 +27,25 @@ const getVotePost = (req, res) => {
   const postId = req.params.postId;
 
   votePostQuery(postId).then((voteData) => {
-    if(voteData.rowCount > 0){
+    if (voteData.rowCount > 0) {
       res.status(200).json({
         data: voteData.rows,
         voteCount: voteData.rowCount
       })
-    }else{
-      res.status(200).json({msg:'no like yet'})
+    } else {
+      res.status(200).json({ msg: 'no like yet' })
     }
-    
+
   })
-  .catch((error)=>{
-    console.log(error);
-  })
+    .catch((error) => {
+      console.log(error);
+    })
+}
+
+const getComments = (req, res) => {
+  const postId = req.params.postId;
+  getCommentsQuery(postId).then(data => res.status(200).json(data.rows))
 }
 
 
-module.exports = { createComment, addVoteToComment, getVotePost }
+module.exports = { createComment, addVoteToComment, getVotePost, getComments }

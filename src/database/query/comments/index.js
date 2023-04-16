@@ -5,7 +5,7 @@ const createCommentQuery = (description, userId, postId) => {
 
   const sql = {
     text: `INSERT INTO comments
-     ( description, user_id, post_id)
+     ( content, user_id, post_id)
      VALUES ($1 , $2, $3 )`,
     values: [description, userId, postId]
   }
@@ -40,5 +40,26 @@ const votePostQuery = (postId) => {
   return connection.query(voteSql)
 }
 
+const getCommentsQuery = (postId)=>{
+  let commentQuery = `select
+c.content,
+c.user_id,
+c.post_id,
+c.created_at,
+p.id,
+u.username
+from comments c
+join posts p 
+on p.id = c.post_id
+join users u
+on u.id = c.user_id
+where p.id = $1`
+  const commentSql = {
+    text: commentQuery,
+    values: [postId]
+  }
+  return connection.query(commentSql)
+}
 
-module.exports = { createCommentQuery, addVoteQuery, votePostQuery }
+
+module.exports = { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery }
