@@ -4,9 +4,148 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>home</title>
+  <link rel="stylesheet" href="css/home.css">
+  <title>reddit</title>
 </head>
 <body>
-    home
+      <nav>
+        <div class="profile">
+        <div class="profile-icon">
+          <i class="fa-solid fa-user"></i>
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+          <div class="register">
+            <button class="login">Login</button>
+            <button class="sign-up">Sign Up</button>
+          </div>
+        </div>
+        <div class="searchbar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" class="search-inp" placeholder="search reddit">
+        </div>
+
+        <div class="logo">
+          <img src="logo.png" alt="logo">
+        </div>
+        
+      </nav>
+      <main class="home-body">
+        <div class="posts">
+          <div class="news-api">
+            <div class="new">
+              <p>this is first new api </p>
+              <img src="logo.png" alt="news">
+            </div>
+            <div class="new">
+              <p>this is first new api</p>
+              <img src="logo.png" alt="news">
+            </div>
+          </div>
+          <div class="filterPosts">
+            <div class="selectFilter">
+              <select>
+                <option selected disabled>eveyWhere</option>
+                <option>palestine</option>
+                <option>egypt</option>
+                <option>jordan</option>
+                <option>syria</option>
+                <option>qatar</option>
+                <option>algeria</option>
+                <option>tunisia</option>
+              </select>
+              <select>
+                <option selected disabled>date</option>
+                <option>2000</option>
+                <option>2001</option>
+                <option>2002</option>
+                <option>2003</option>
+                <option>2004</option>
+                <option>2005</option>
+                <option>2006</option>
+                <option>2007</option>
+                <option>2008</option>
+                <option>2009</option>
+                <option>2010</option>
+              </select>
+            </div>
+          </div>
+
+          
+          <div class="posts-container">
+            <div class="blog_post">
+              <div class="img_pod">
+                <img class="user-img" src="https://pbs.twimg.com/profile_images/890901007387025408/oztASP4n.jpg" alt="user image">
+              </div>
+              <div class="container_copy">
+                <div class="userPost">
+                  <h3>user name</h3>
+                  <h3>12 January 2019</h3>
+                </div>
+                <h1>post title</h1>
+                <div class="postsContent">
+                  <p class="post-content">The position property specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky).</p>
+                </div>
+              </div>
+              <div class="img-post">
+                <img class="post-img" src="logo.png" alt="">
+              </div>
+          
+              <div class="inputs-post">
+                <div class="votes">
+                  <button><i class="fa-solid fa-arrow-left"></i></button>
+                  <p>20</p>
+                  <button><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+          
+                <div class="commentsBtnPost">
+                  <button>comments</button>
+                  <p class="comments-nums">20</p>
+                </div>
+                <div class="comments">
+                  <div class="comment">
+                    <div class="comment-head">
+                      <img src="logo.png" class="comment-user-photo">
+                      <p class="comment-user-name">username</p>
+                      <p class="comment-time">3 hour ago</p>
+                    </div>
+                    <div class="comment-content">
+                      <p class="comment-user-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, vero!</p>
+                     
+                    </div>
+                  </div>
+                  <div class="comment">
+                    <div class="comment-head">
+                      <img src="logo.png" class="comment-user-photo">
+                      <p class="comment-user-name">username</p>
+                      <p class="comment-time">3 hour ago</p>
+                    </div>
+                    <div class="comment-content">
+                      <p class="comment-user-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, vero!</p>
+                     
+                    </div>
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </div>
+                  <div class="comment">
+                    <div class="comment-head">
+                      <img src="logo.png" class="comment-user-photo">
+                      <p class="comment-user-name">username</p>
+                      <p class="comment-time">3 hour ago</p>
+                    </div>
+                    <div class="comment-content">
+                      <p class="comment-user-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, vero!</p>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-posts">
+          <p>search for posts with this ...</p>
+        </div>
+      </main>
+    <script src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
+
 </body>
 </html>

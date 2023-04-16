@@ -48,12 +48,12 @@ const signin = (req, res) => {
         req.userId = rows[0].id
         return bcrypt.compare(password, rows[0].password)
       } else {
-        throw customError(401, { msg: 'please create account first' })
+        throw customError(401, { msg: 'your password or username wrong' })
       }
     })
     .then((isMatched) => {
       if (!isMatched) {
-        throw customError(401, { msg: 'please enter correct password' })
+        throw customError(401, { msg: 'your password or username wrong' })
       } else {
         return signToken(username, req.userId)
       }
