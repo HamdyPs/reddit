@@ -23,7 +23,8 @@ const getPostsQuery = (userId) => {
   u.photo,
   u.username,
   p.created_at,
-  p.user_id
+  p.user_id,
+  p.id
 from posts p 
 join users u
   on u.id = p.user_id`
@@ -66,7 +67,7 @@ join users u
 
 const commentQuery = (postId) => {
   let commentsQuery = `select
-  c.description,
+  c.content,
   c.user_id,
   u.username,
   u.photo

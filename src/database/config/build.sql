@@ -28,7 +28,7 @@ CREATE TABLE posts (
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
-  description TEXT,
+  content TEXT,
   user_id INTEGER NOT NULL,
   post_id INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
