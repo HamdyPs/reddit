@@ -104,6 +104,28 @@ join users u
   return connection.query(sql)
 
 }
+const namePostsQuery = (postName)=>{
+  let namequery = `select 
+  p.title,
+  p.description,
+  p.photo,
+  u.photo,
+  u.username,
+  p.created_at,
+  p.user_id,
+  p.id
+from posts p 
+join users u
+  on u.id = p.user_id
+  where p.title = $1`
+  const sql = {
+    text: namequery,
+    values: [postName]
+  };
+
+  return connection.query(sql)
+
+}
 
 const deletePostQuery = (postId) => {
   const sql = {
@@ -114,4 +136,4 @@ const deletePostQuery = (postId) => {
 
 }
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery }
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery }
