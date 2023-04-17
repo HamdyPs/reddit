@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/profile.css">
   <title>reddit</title>
 </head>
 <body>
@@ -32,6 +33,7 @@
         
       </nav>
       <main class="home-body">
+        
         <div class="posts">
           <div class="news-api">
             <div class="new">
@@ -76,21 +78,26 @@
           <div class="posts-container">
           </div>
         </div>
-        <div class="filter-posts">
-          <p>feeds</p>
-          <div class="profileDiv">
-            <a href="#"><i class="fa-solid fa-id-badge"></i> Profile</a>
+        <div class="sidebar">
+          <div class="searchPost">
+            <input type="text" placeholder="filter">
           </div>
-
-          <div class="apisDiv">
-            <h2>apis lists</h2>
-            <div class="apis">
-              <button>naruto</button>
-              <button>random anime</button>
-              <button>free games</button>
-              <button>sports</button>
-            </div>
-          </div>
+    
+            <ul class="feeds">
+              <li><a href="#"><i class="fa-solid fa-house"></i>home</a></li>
+              <li><a href="#"><i class="fa-solid fa-house"></i>profile</a></li>
+              <li><a href="#"><i class="fa-solid fa-fire"></i>Popular</a></li>
+              <li><a href="#"><i class="fa-solid fa-reply-all"></i>All</a></li>
+            </ul>
+    
+            <ul class="others">
+              <li><a href="#"><i class="fa-brands fa-reddit"></i>naruto</a></li>
+              <li><a href="#"><i class="fa-brands fa-reddit"></i>random anime</a></li>
+              <li><a href="#"><i class="fa-brands fa-reddit"></i>sports</a></li>
+              <li><a href="#"><i class="fa-brands fa-reddit"></i>free games</a></li>
+              
+            </ul>
+      
         </div>
       </main>
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
