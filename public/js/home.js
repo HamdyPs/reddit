@@ -123,6 +123,12 @@ const createPost = (data) => {
       })
     })
 
+    leftArrowBtn.addEventListener('click',()=>{
+      axios.delete(`/api/comments/${post.id}`).then(response => {
+        showVote(post.id, votesCount)
+      })
+    })
+
 
     // create outermost div element with class "comments"
     const commentsDiv = document.createElement("div");
@@ -213,6 +219,12 @@ axios.get('/api/posts/').then(response => {
 
 const showVote = (post, votesCount) => {
   axios.get(`/api/comments/${post}`).then(response => {
+    if(response.data.voteCount > 0){
     votesCount.textContent = response.data.voteCount;
+      
+    }else{
+      votesCount.textContent = '0'
+
+    }
   })
 }
