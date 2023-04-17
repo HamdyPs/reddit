@@ -2,6 +2,7 @@
 const posts_container = document.querySelector('.posts-container')
 const countrySelect = document.querySelector('.country')
 const userNameAcoount = document.querySelector('.userNameAcoount')
+const news_api = document.querySelector('.news-api')
 
 const createPost = (data) => {
   console.log(data);
@@ -247,3 +248,30 @@ countrySelect.addEventListener('change', (e) => {
     createPost(response.data)
   })
 })
+
+axios.get('/api/apis/games').then(response=> homeApi(response.data))
+
+const homeApi = (data)=>{
+  console.log(data);
+  data.forEach(api=>{
+    // create a div element
+const div = document.createElement('div');
+div.classList.add('new'); // add 'new' class to the div element
+
+// create a p element
+const a = document.createElement('a');
+a.setAttribute('target','_blank')
+a.href = api.game_url;
+a.innerText = api.title; // set the text content of the p element
+
+// create an img element
+const img = document.createElement('img');
+img.src = api.thumbnail; // set the src attribute of the img element
+img.alt = 'news'; // set the alt attribute of the img element
+
+// append the p and img elements to the div element
+div.appendChild(a);
+div.appendChild(img);
+news_api.appendChild(div)
+  })
+}
