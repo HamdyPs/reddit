@@ -7,9 +7,9 @@ const createPost = (req, res) => {
 }
 
 const getUserPosts = (req, res) => {
-  const userId = req.params.userId
+  const { user } = req;
 
-  getPostsQuery(userId)
+  getPostsQuery(user.providerID)
     .then((data) => {
       res.status(200).json(data.rows)
     })
