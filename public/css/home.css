@@ -72,20 +72,16 @@ nav{
 }
 
 .logo{
-  height: 50px;
-  width: 50px;
-  background: linear-gradient(90deg, #ff9966, #ff5e62);
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
-  border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .logo img{
   height: 3rem;
   width: 3rem;
-  position: relative;
   border-radius: 100%;
   z-index: 1;
 }
@@ -167,10 +163,11 @@ box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(4.9px);
 -webkit-backdrop-filter: blur(4.9px);
 border: 1px solid rgba(255, 255, 255, 0.18);
-  max-width: 50%;
+  max-width: 60%;
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
   position: relative;
   padding: 0px 20px;
+  height: fit-content;
 }
 
 
@@ -304,21 +301,20 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: absolute;
-  top: 0%;
-  left: -30%;
-  width: 130%;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   padding: 30px 20px;
   background-color: rgba(0, 0, 0, 1);
   z-index: 99;
-  visibility: hidden;
+  visibility: visible;
+  position: relative;
 }
 
 .commentDivParent{
   overflow-y: scroll;
   padding: 0px 10px;
+  height: 700px;
 }
 
 .commentDivParent::-webkit-scrollbar{
@@ -386,7 +382,7 @@ border: 1px solid rgba(255, 255, 255, 0.18);  border-radius: 20px;
   position: absolute;
   color: #fff;
   right: 50%;
-  top: 5px;
+  top: 10px;
   font-size: 25px;
   cursor: pointer;
   transition: 0.2s ease-in-out;
@@ -397,7 +393,7 @@ border: 1px solid rgba(255, 255, 255, 0.18);  border-radius: 20px;
 }
 
 .inputCommentDiv{
-  height: 100px;
+  height: 60px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -420,8 +416,8 @@ color: #f3efef;
 
 .fa-paper-plane{
 position: absolute;
-top: 14px;
-right: 10px;
+top: 10px;
+right: 20px;
 color: #ff5e62;
 font-size: 30px;
 cursor: pointer;

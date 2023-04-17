@@ -74,6 +74,9 @@ const signin = (req, res) => {
 const getSignUpPage = (req, res) =>{
   res.sendFile(join(__dirname, '../../../public/components/client/resgister.html'))
 }
+const getProfilePage = (req, res) =>{
+  res.sendFile(join(__dirname, '../../../public/components/client/profile.html'))
+}
 
 
-module.exports = { signUp, signin,getSignUpPage }
+module.exports = { signUp, signin,getSignUpPage,getProfilePage }
