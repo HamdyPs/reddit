@@ -82,6 +82,29 @@ const commentQuery = (postId) => {
   return connection.query(commentSql)
 }
 
+const countryPostsQuery = (country)=>{
+  let countryquery = `select 
+  p.title,
+  p.description,
+  p.photo,
+  u.photo,
+  u.username,
+  p.created_at,
+  p.user_id,
+  p.id
+from posts p 
+join users u
+  on u.id = p.user_id
+  where u.country = $1`
+  const sql = {
+    text: countryquery,
+    values: [country]
+  };
+
+  return connection.query(sql)
+
+}
+
 const deletePostQuery = (postId) => {
   const sql = {
     text: `DELETE FROM posts where posts.id = $1`,
@@ -91,4 +114,4 @@ const deletePostQuery = (postId) => {
 
 }
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery }
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery }

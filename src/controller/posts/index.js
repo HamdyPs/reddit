@@ -1,5 +1,5 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
   const { title, description, photo } = req.body;
   const { user } = req;
@@ -45,6 +45,18 @@ const getPosts = (req, res) => {
     })
 }
 
+const countryPosts = (req, res)=>{
+  const country = req.params.country
+
+  countryPostsQuery(country).then(data=>{
+    if(data.rowCount > 0){
+      res.status(200).json(data.rows)
+      return
+    }
+    res.status(401).json('there is no posts from this country')
+  })
+}
+
 const deletePost = (req, res) => {
   const postId = req.params.postId
   deletePostQuery(postId)
@@ -53,4 +65,4 @@ const deletePost = (req, res) => {
     }))
 }
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost }
+module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts }
