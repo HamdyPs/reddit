@@ -92,16 +92,14 @@ nav{
 }
 
 .posts{
-  flex: 0.8;
+  width: 88%;
   background: rgb(3 3 3);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(8.9px);
 -webkit-backdrop-filter: blur(8.9px);
 padding: 20px 0px;
 }
-.filter-posts{
-  flex: 0.2;
-}
+
 
 .news-api{
   display: grid;
