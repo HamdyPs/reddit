@@ -1,3 +1,4 @@
+
 const posts_container = document.querySelector('.posts-container')
 
 const createPost = (data) => {
@@ -85,9 +86,9 @@ const createPost = (data) => {
 
     // create the votes count p element
     const votesCount = document.createElement('p');
-    votesCount.textContent = '20';
+    votesCount.classList.add('vote-count')
     votes.appendChild(votesCount);
-
+    showVote(post.id, votesCount)
     // create the right arrow button element
     const rightArrowBtn = document.createElement('button');
     votes.appendChild(rightArrowBtn);
@@ -95,6 +96,7 @@ const createPost = (data) => {
     const rightArrowIcon = document.createElement('i');
     rightArrowIcon.classList.add('fa-solid', 'fa-arrow-right');
     rightArrowBtn.appendChild(rightArrowIcon);
+
 
     // create the commentsBtnPost div element
     const commentsBtnPost = document.createElement('div');
@@ -111,17 +113,28 @@ const createPost = (data) => {
     const commentsCount = document.createElement('p');
     commentsCount.classList.add('comments-nums');
     commentsCount.textContent = '20';
-        // create outermost div element with class "comments"
-const commentsDiv = document.createElement("div");
-commentsDiv.classList.add("comments");
-blogPost.appendChild(commentsDiv)
+
+    rightArrowBtn.addEventListener('click', () => {
+      axios.get(`/api/comments/user/${post.id}`).then(response => {
+        // console.log(response);
+      })
+      axios.get(`/api/comments/${post.id}`).then(response => {
+        showVote(post.id, votesCount)
+      })
+    })
+
+
+    // create outermost div element with class "comments"
+    const commentsDiv = document.createElement("div");
+    commentsDiv.classList.add("comments");
+    blogPost.appendChild(commentsDiv)
 
     posts_container.appendChild(blogPost)
 
     commentsBtn.addEventListener('click', () => {
-     
+
       axios.get(`/api/comments/post/${post.id}`).then(response => {
-        showComments(response.data,commentsDiv)
+        showComments(response.data, commentsDiv)
       })
     })
 
@@ -131,71 +144,75 @@ blogPost.appendChild(commentsDiv)
 }
 
 
-const showComments = (data,commentsDiv) => {
-  console.log(data);
-  data.forEach(comment=>{
-    console.log(comment);
+const showComments = (data, commentsDiv) => {
+  data.forEach(comment => {
 
+    // create comment div element with class "comment"
+    const commentDiv = document.createElement("div");
+    commentDiv.classList.add("comment");
 
-// create comment div element with class "comment"
-const commentDiv = document.createElement("div");
-commentDiv.classList.add("comment");
+    // create comment-head div element with class "comment-head"
+    const commentHeadDiv = document.createElement("div");
+    commentHeadDiv.classList.add("comment-head");
 
-// create comment-head div element with class "comment-head"
-const commentHeadDiv = document.createElement("div");
-commentHeadDiv.classList.add("comment-head");
+    // create img element with class "comment-user-photo"
+    const img = document.createElement("img");
+    img.classList.add("comment-user-photo");
+    img.src = "logo.png";
 
-// create img element with class "comment-user-photo"
-const img = document.createElement("img");
-img.classList.add("comment-user-photo");
-img.src = "logo.png";
+    // create p element with class "comment-user-name"
+    const userName = document.createElement("p");
+    userName.classList.add("comment-user-name");
+    userName.textContent = comment.username;
 
-// create p element with class "comment-user-name"
-const userName = document.createElement("p");
-userName.classList.add("comment-user-name");
-userName.textContent = comment.username;
+    // create p element with class "comment-time"
+    const time = document.createElement("p");
+    time.classList.add("comment-time");
+    time.textContent = comment.created_at;
 
-// create p element with class "comment-time"
-const time = document.createElement("p");
-time.classList.add("comment-time");
-time.textContent = comment.created_at;
+    // append img, userName and time elements to comment-head div element
+    commentHeadDiv.appendChild(img);
+    commentHeadDiv.appendChild(userName);
+    commentHeadDiv.appendChild(time);
 
-// append img, userName and time elements to comment-head div element
-commentHeadDiv.appendChild(img);
-commentHeadDiv.appendChild(userName);
-commentHeadDiv.appendChild(time);
+    // create comment-content div element with class "comment-content"
+    const commentContentDiv = document.createElement("div");
+    commentContentDiv.classList.add("comment-content");
 
-// create comment-content div element with class "comment-content"
-const commentContentDiv = document.createElement("div");
-commentContentDiv.classList.add("comment-content");
+    // create p element with class "comment-user-content"
+    const userContent = document.createElement("p");
+    userContent.classList.add("comment-user-content");
+    userContent.textContent = comment.content;
 
-// create p element with class "comment-user-content"
-const userContent = document.createElement("p");
-userContent.classList.add("comment-user-content");
-userContent.textContent = comment.content;
+    // append userContent element to comment-content div element
+    commentContentDiv.appendChild(userContent);
 
-// append userContent element to comment-content div element
-commentContentDiv.appendChild(userContent);
+    const closeComments = document.createElement("i");
+    closeComments.classList.add("fa-solid", "fa-circle-xmark")
 
-const closeComments = document.createElement("i");
-closeComments.classList.add("fa-solid","fa-circle-xmark")
+    closeComments.addEventListener('click', () => {
+      commentsDiv.style.visibility = 'hidden'
 
-closeComments.addEventListener('click',()=>{
-  commentsDiv.style.visibility = 'hidden'
+    })
 
-})
+    // append comment-head and comment-content div elements to comment div element
+    commentDiv.appendChild(commentHeadDiv);
+    commentDiv.appendChild(commentContentDiv);
+    commentDiv.appendChild(closeComments)
 
-// append comment-head and comment-content div elements to comment div element
-commentDiv.appendChild(commentHeadDiv);
-commentDiv.appendChild(commentContentDiv);
-commentDiv.appendChild(closeComments)
-
-// append comment div element to comments div element
-commentsDiv.appendChild(commentDiv);
-commentsDiv.style.visibility = 'visible'
+    // append comment div element to comments div element
+    commentsDiv.appendChild(commentDiv);
+    commentsDiv.style.visibility = 'visible'
   })
 }
 
 axios.get('/api/posts/').then(response => {
   createPost(response.data)
 })
+
+
+const showVote = (post, votesCount) => {
+  axios.get(`/api/comments/${post}`).then(response => {
+    votesCount.textContent = response.data.voteCount;
+  })
+}

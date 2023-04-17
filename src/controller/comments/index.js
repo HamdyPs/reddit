@@ -12,7 +12,6 @@ const addVoteToComment = (req, res) => {
   const postId = req.params.postId;
 
   addVoteQuery(user.providerID, postId).then((data) => {
-    console.log(data);
     if (data.rowCount > 0) {
       res.status(200).json('u have been liked this post')
 
