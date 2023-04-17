@@ -56,6 +56,20 @@ const countryPosts = (req, res)=>{
     res.status(401).json('there is no posts from this country')
   })
 }
+const namePosts = (req, res)=>{
+  const postName = req.params.postname
+
+  console.log(postName);
+
+  countryPostsQuery(postName).then(data=>{
+    console.log(data.rows);
+    if(data.rowCount > 0){
+      res.status(200).json(data.rows)
+      return
+    }
+    res.status(401).json('there is no posts with this name')
+  })
+}
 
 const deletePost = (req, res) => {
   const postId = req.params.postId
@@ -65,4 +79,4 @@ const deletePost = (req, res) => {
     }))
 }
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts }
+module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts,namePosts }
