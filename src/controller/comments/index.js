@@ -1,4 +1,4 @@
-const { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery } = require('../../database/query/comments')
+const { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery,deleteVoteQuery } = require('../../database/query/comments')
 
 const createComment = (req, res) => {
   const description = req.body.description;
@@ -41,10 +41,19 @@ const getVotePost = (req, res) => {
     })
 }
 
+const deleteVotePost = (req, res)=>{
+  const { user } = req;
+  const postId = req.params.postId;
+
+  deleteVoteQuery(postId,user.providerID).then(response=>{
+    res.status(200).json('u have been deleted your vote succssfully')
+  })
+}
+
 const getComments = (req, res) => {
   const postId = req.params.postId;
   getCommentsQuery(postId).then(data => res.status(200).json(data.rows))
 }
 
 
-module.exports = { createComment, addVoteToComment, getVotePost, getComments }
+module.exports = { createComment, addVoteToComment, getVotePost, getComments,deleteVotePost }
