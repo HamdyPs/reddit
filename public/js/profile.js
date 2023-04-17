@@ -1,6 +1,10 @@
+
 const allUserPosts = document.querySelector('.allUserPosts')
 const userNameProfile = document.querySelector('.userNameProfile')
 const userNameAcoount = document.querySelector('.userNameAcoount')
+const createPostBtn = document.querySelector('.createPost')
+const userCreatePostDiv = document.querySelector('.userCreatePostDiv')
+const createPostForm = document.querySelector('.createPostForm')
 
 axios.get(`/api/posts/user`).then(response => {
   renderPost(response.data)
@@ -236,3 +240,30 @@ const showComments = (data, commentsDiv, postId) => {
   commentsDiv.appendChild(inputCommentDiv);
 
 }
+
+createPostBtn.addEventListener('click',()=>{
+  userCreatePostDiv.style.display = 'block'
+})
+
+createPostForm.addEventListener('submit',(e)=>{
+  e.preventDefault()
+  const obj = new FormData(createPostForm);
+	const data = Object.fromEntries(obj)
+
+  console.log(data);
+  axios.post('/api/posts/',{
+    headers: {
+			'Accept': 'application/json, text/plain, */*',
+			'Content-Type': 'application/json'
+		},
+		body: data
+  })
+
+  axios.get(`/api/posts/user`).then(response => {
+    renderPost(response.data)
+  })
+  
+
+  userCreatePostDiv.style.display = 'none'
+
+})

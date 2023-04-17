@@ -1,7 +1,8 @@
 // const postSchema = require('../../schema/posts.schema')
 const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
-  const { title, description, photo } = req.body;
+  
+  const { title, description, photo } = req.body.body;
   const { user } = req;
   createPostQuery({ title, description, photo }, user).then(() => res.json('your post has created succssfully'))
 }
