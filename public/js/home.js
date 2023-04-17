@@ -1,7 +1,9 @@
 
 const posts_container = document.querySelector('.posts-container')
+const countrySelect = document.querySelector('.country')
 
 const createPost = (data) => {
+  posts_container.innerHTML = ''
   data.forEach(post => {
     // create the div element
     const blogPost = document.createElement('div');
@@ -228,3 +230,9 @@ const showVote = (post, votesCount) => {
     }
   })
 }
+
+countrySelect.addEventListener('change',(e)=>{
+axios.get(`/api/posts/postCountry/${e.target.value}`).then(response => {
+  createPost(response.data)
+})
+})
