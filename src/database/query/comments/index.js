@@ -39,6 +39,15 @@ const votePostQuery = (postId) => {
   }
   return connection.query(voteSql)
 }
+const deleteVoteQuery = (postId,userId) => {
+  
+  let removevote = `DELETE FROM votes where votes.user_id = $1 and votes.post_id = $2`
+  const voteSql = {
+    text: removevote,
+    values: [userId,postId]
+  }
+  return connection.query(voteSql)
+}
 
 const getCommentsQuery = (postId)=>{
   let commentQuery = `select
@@ -62,4 +71,4 @@ where p.id = $1`
 }
 
 
-module.exports = { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery }
+module.exports = { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery,deleteVoteQuery }
