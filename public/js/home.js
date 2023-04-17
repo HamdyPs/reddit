@@ -1,8 +1,10 @@
 
 const posts_container = document.querySelector('.posts-container')
 const countrySelect = document.querySelector('.country')
+const userNameAcoount = document.querySelector('.userNameAcoount')
 
 const createPost = (data) => {
+  console.log(data);
   posts_container.innerHTML = ''
   data.forEach(post => {
     const blogPost = document.createElement('div');
@@ -28,6 +30,8 @@ const createPost = (data) => {
 
     const userName = document.createElement('h3');
     userName.textContent = post.username;
+    userNameAcoount.textContent = post.username;
+
     userPost.appendChild(userName);
 
     const postDate = document.createElement('h3');
@@ -174,7 +178,7 @@ const showComments = (data, commentsDiv, postId) => {
     closeComments.classList.add("fa-solid", "fa-circle-xmark")
 
     closeComments.addEventListener('click', () => {
-      commentsDiv.style.visibility = 'hidden'
+      commentsDiv.style.display = 'none'
 
     })
 
@@ -185,7 +189,7 @@ const showComments = (data, commentsDiv, postId) => {
 
     commentsDiv.appendChild(commentDivParent);
 
-    commentsDiv.style.visibility = 'visible'
+    commentsDiv.style.display = 'flex'
   })
 
   const inputCommentDiv = document.createElement('div')
