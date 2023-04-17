@@ -1,11 +1,12 @@
 const { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery,deleteVoteQuery } = require('../../database/query/comments')
 
 const createComment = (req, res) => {
-  const description = req.body.description;
+  const content = req.body.content;
+  console.log(content);
   const { user } = req;
   const postId = req.params.postId;
 
-  createCommentQuery(description, user.providerID, postId).then(() => res.json('your comment has created succssfully'))
+  createCommentQuery(content, user.providerID, postId).then(() => res.status(201).json('your comment has created succssfully'))
 }
 const addVoteToComment = (req, res) => {
   const { user } = req;
