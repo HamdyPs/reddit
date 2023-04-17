@@ -42,7 +42,7 @@
 
         <ul class="others">
           <li><a href="#"><i class="fa-brands fa-reddit"></i>user Settings</a></li>
-          <li><a href="#"><i class="fa-solid fa-plus"></i>create post</a></li>
+          <li class="createPost"><a href="#"><i class="fa-solid fa-plus"></i>create post</a></li>
         </ul>
   
     </div>
@@ -75,6 +75,31 @@
       </div>
     </div>
   </main>
+  <div class="userCreatePostDiv">
+    <div class="signupSection">
+      <div class="info">
+        <h2>create your post</h2>
+      </div>
+      <form class="createPostForm">
+        <h2>Sign Up</h2>
+        <ul class="noBullet">
+          <li>
+            <input type="text" class="inputFields"  name="title" placeholder="title" />
+          </li>
+          <li>
+            <textarea cols="30" rows="10" type="text" class="inputFields"  name="description" placeholder="description"/></textarea>
+          </li>
+          <li>
+            <input type="text" class="inputFields"  name="photo" placeholder="photo"/>
+          </li>
+          <li id="center-btn">
+            <button type="submit" id="join-btn">submit</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
