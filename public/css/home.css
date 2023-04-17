@@ -303,10 +303,11 @@ h1 {
 .comments{
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: absolute;
   top: 0%;
-  left: 0%;
-  width: 100%;
+  left: -30%;
+  width: 130%;
   height: 100%;
   overflow: hidden;
   padding: 30px 20px;
@@ -315,9 +316,31 @@ h1 {
   visibility: hidden;
 }
 
+.commentDivParent{
+  overflow-y: scroll;
+  padding: 0px 10px;
+}
+
+.commentDivParent::-webkit-scrollbar{
+  width: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(4.9px);
+-webkit-backdrop-filter: blur(4.9px);
+border: 1px solid rgba(255, 255, 255, 0.18);  height: 10px;
+}
+.commentDivParent::-webkit-scrollbar-thumb{
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(4.9px);
+-webkit-backdrop-filter: blur(4.9px);
+border: 1px solid rgba(255, 255, 255, 0.18);  border-radius: 20px;
+}
 .comment{
   padding: 10px 30px;
-  background: rgb(9, 9, 9);
+  background: rgb(21, 21, 21);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   height: 150px;
@@ -371,6 +394,37 @@ h1 {
 
 .fa-circle-xmark:hover{
   color: #ff5e62;
+}
+
+.inputCommentDiv{
+  height: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputComment{
+  width: 100%;
+  height: 100%;
+  padding: 0px 10px;
+  outline-width: 0;
+  font-size: 17px;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(4.9px);
+-webkit-backdrop-filter: blur(4.9px);
+color: #f3efef;
+}
+
+.fa-paper-plane{
+position: absolute;
+top: 14px;
+right: 10px;
+color: #ff5e62;
+font-size: 30px;
+cursor: pointer;
 }
 
 .filterPosts{
