@@ -3,12 +3,12 @@ const connection = require('../../config');
 
 const createPostQuery = (postData, user) => {
 
-  const { title, description, photo, room } = postData;
+  const { title, description, photo } = postData;
   const userId = user.providerID
   const sql = {
-    text: `INSERT INTO posts (title, description, photo,room, user_id)
-     VALUES ($1 , $2, $3, $4,$5)`,
-    values: [title, description, photo,room, userId]
+    text: `INSERT INTO posts (title, description, photo, user_id)
+     VALUES ($1 , $2, $3, $4)`,
+    values: [title, description, photo, userId]
   }
 
   return connection.query(sql)
@@ -24,8 +24,7 @@ const getPostsQuery = (userId) => {
   u.username,
   p.created_at,
   p.user_id,
-  p.id,
-  p.room
+  p.id
 from posts p 
 join users u
   on u.id = p.user_id`
@@ -36,27 +35,6 @@ join users u
   const sql = {
     text: query,
     values: userId ? [userId] : []
-  };
-  return connection.query(sql);
-};
-const getRoomPostsQuery = (room) => {
-  let roomquery = `select 
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-from posts p 
-join users u
-  on u.id = p.user_id
-  where p.room = $1`
-
-  const sql = {
-    text: roomquery,
-    values: [room]
   };
   return connection.query(sql);
 };
@@ -158,4 +136,15 @@ const deletePostQuery = (postId) => {
 
 }
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,getRoomPostsQuery }
+const createSubredditQuery = (subredditTitle,user_id)=>{
+  const subredditQuery = `insert into subreddits (subredditTitle, user_id) values ($1,$2)`
+
+  const sql = {
+    text: subredditQuery,
+    values: [subredditTitle,user_id]
+  }
+  return connection.query(sql);
+
+}
+
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery }

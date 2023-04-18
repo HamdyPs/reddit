@@ -1,10 +1,25 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,getRoomPostsQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
-  
-  const { title, description, photo,room } = req.body;
+
+  const { title, description, photo, room,subredditTitle } = req.body;
   const { user } = req;
-  createPostQuery({ title, description, photo,room }, user).then(() => res.json('your post has created succssfully'))
+  createPostQuery({ title, description, photo, room }, user)
+  .then(() => {
+    if(subredditTitle){
+      createSubredditQuery(subredditTitle,user.providerID).then(response=>{
+       return res.status(201).json('this Subreddit and post has been created successfuly')
+      })
+    }else{
+      res.status(201).json('your post has created succssfully')
+
+    }
+  })
+
+
+  
+  
+
 }
 
 const getUserPosts = (req, res) => {
@@ -45,34 +60,27 @@ const getPosts = (req, res) => {
       res.status(200).json(data.rows)
     })
 }
-const getRoomPosts = (req, res) => {
-  const room = req.params.room
-  console.log(room);
-  getRoomPostsQuery(room)
-    .then((data) => {
-      res.status(200).json(data.rows)
-    })
-}
 
-const countryPosts = (req, res)=>{
+
+const countryPosts = (req, res) => {
   const country = req.params.country
 
-  countryPostsQuery(country).then(data=>{
-    if(data.rowCount > 0){
+  countryPostsQuery(country).then(data => {
+    if (data.rowCount > 0) {
       res.status(200).json(data.rows)
       return
     }
     res.status(401).json('there is no posts from this country')
   })
 }
-const namePosts = (req, res)=>{
+const namePosts = (req, res) => {
   const postName = req.params.postname
 
   console.log(postName);
 
-  countryPostsQuery(postName).then(data=>{
+  countryPostsQuery(postName).then(data => {
     console.log(data.rows);
-    if(data.rowCount > 0){
+    if (data.rowCount > 0) {
       res.status(200).json(data.rows)
       return
     }
@@ -88,4 +96,14 @@ const deletePost = (req, res) => {
     }))
 }
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts,namePosts,getRoomPosts }
+// const createSubreddit = (req, res) => {
+//   const title = req.body;
+//   const { user } = req;
+
+
+//   createSubredditQuery(title, user.providerID).then(response => {
+//     res.status(201).json('this Subreddit has been created successfuly')
+//   })
+// }
+
+module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost, countryPosts, namePosts }
