@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users, posts, comments, votes, friends;
+DROP TABLE IF EXISTS users, posts, comments, votes, friends,subreddits;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -16,15 +16,24 @@ CREATE TABLE users (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE subreddits (
+  id SERIAL PRIMARY KEY,
+  subredditTitle VARCHAR(255),
+  user_id INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT,
   photo VARCHAR(255),
-  room VARCHAR(255),
   user_id INTEGER NOT NULL,
+  subreddits_id INTEGER,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (subreddits_id) REFERENCES subreddits(id)
 );
 
 CREATE TABLE comments (
@@ -51,6 +60,7 @@ CREATE TABLE friends (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 INSERT INTO users(username, email, password, photo, date, country, role, phone, address) VALUES 
 ('admin','admin@gmail.com','$2a$10$hcarVj2MRTYH8uKUwavEouyMoozBb35piGNg.ssd3Uv5CNzVIR8xq',
 'https://i.pinimg.com/564x/31/1b/2d/311b2def17cba6b7f05ac1d2ea976786.jpg', '1997', 'palestine', 
