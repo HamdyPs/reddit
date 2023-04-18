@@ -47,9 +47,7 @@ checkedIcon.forEach(icon => {
       phone: phone.value,
       address: address.value
     }
-    axios.put('/api/users/update', {
-      body: data
-    })
+    axios.put('/api/users/update', data)
 
 
   })
