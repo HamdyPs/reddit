@@ -49,7 +49,18 @@ const updateUserQuery = ({ username, email, photo, date, country, phone, address
 
   return connection.query(sql)
 }
+const updatePasswordQuery = ( newPassword , userId) => {
+
+  const sql = {
+    text: `update users set
+    password = $1
+    where id = $2`,
+    values: [newPassword, userId]
+  }
+
+  return connection.query(sql)
+}
 
 
 
-module.exports = { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery };
+module.exports = { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery,updatePasswordQuery };
