@@ -91,7 +91,7 @@ const updateUserData = (req, res)=>{
   const { username, email, photo, date, country, phone, address } = req.body;
   const { user } = req;
   updateUserQuery({ username, email, photo, date, country, phone, address },user.providerID)
-  .then(data=> res.status(200).json('your data has been updated succssuflly'))
+  .then(data=> res.status(200).json('your data has been updated succssuflly brother'))
 }
 
 
