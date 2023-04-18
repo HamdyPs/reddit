@@ -20,14 +20,7 @@ signUpForm.addEventListener('submit', (e) => {
 	e.preventDefault()
 	const obj = new FormData(signUpForm);
 	const data = Object.fromEntries(obj)
-	fetch('/api/users/signup', {
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json, text/plain, */*',
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	})
+	axios.post('/api/users/signup',data)
 		.then(result => result.json()).then((data) => {
 			signUpMsg.textContent = data.data.data
 
@@ -47,14 +40,7 @@ signinForm.addEventListener('submit', (e) => {
 		toastError(data)
 		return
 	} else {
-		fetch('/api/users/signin', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
+		axios.post('/api/users/signin', data)
 			.then(() => signinResponse.textContent = 'welcome to our website')
 			.catch(console.log)
 	}
