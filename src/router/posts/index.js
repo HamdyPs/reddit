@@ -1,5 +1,5 @@
 const postsRouter = require('express').Router();
-const { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts,namePosts } = require('../../controller/posts');
+const { createPost, getUserPosts, getPosts, deletePost, getPost,countryPosts,namePosts,getSubredditNames,createSubreddit } = require('../../controller/posts');
 const auth = require('../../helper/auth');
 
 postsRouter.post('/', auth, createPost);
@@ -10,5 +10,7 @@ postsRouter.get('/', getPosts);
 // postsRouter.get('/subreddits', createSubreddit);
 postsRouter.get('/postCountry/:country', countryPosts);
 postsRouter.get('/postname/:postname', namePosts);
+postsRouter.get('/subreddits/names', getSubredditNames);
+postsRouter.post('/subreddit',auth, createSubreddit);
 
 module.exports = postsRouter;

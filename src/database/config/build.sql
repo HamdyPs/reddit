@@ -18,7 +18,7 @@ CREATE TABLE users (
 
 CREATE TABLE subreddits (
   id SERIAL PRIMARY KEY,
-  subredditTitle VARCHAR(255),
+  subredditTitle VARCHAR(255) NOT NULL UNIQUE,
   user_id INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id)
@@ -30,10 +30,9 @@ CREATE TABLE posts (
   description TEXT,
   photo VARCHAR(255),
   user_id INTEGER NOT NULL,
-  subreddits_id INTEGER,
+  subredditTitle VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (subreddits_id) REFERENCES subreddits(id)
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE comments (
