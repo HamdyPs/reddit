@@ -22,5 +22,16 @@ const signInUserQuery = (userData) => {
 
   return connection.query(sql)
 };
+const getUserQuery = (userId) => {
 
-module.exports = { signUpUserQuery, signInUserQuery };
+  const sql = {
+    text: `SELECT id,username, email,password, photo, date, country, phone, address FROM users where users.id = $1`,
+    values: [userId]
+  }
+
+  return connection.query(sql)
+};
+
+
+
+module.exports = { signUpUserQuery, signInUserQuery,getUserQuery };

@@ -1,6 +1,6 @@
 const customError = require('../../helper/customError')
-const { signUpUserQuery, signInUserQuery } = require('../../database/query/users')
-const {join} = require('path')
+const { signUpUserQuery, signInUserQuery, getUserQuery } = require('../../database/query/users')
+const { join } = require('path')
 // const customError = require('../../helper/customError')
 const { signUpSchema, signinSchema } = require('../../schema/users.schema')
 const bcrypt = require('bcryptjs')
@@ -63,7 +63,7 @@ const signin = (req, res) => {
       })
     })
     .catch((error) => {
-      console.log(error,'adfadfadf');
+      console.log(error, 'adfadfadf');
       res.json({
         status: error.status,
         massage: error.massage
@@ -71,12 +71,21 @@ const signin = (req, res) => {
     })
 }
 
-const getSignUpPage = (req, res) =>{
+const getSignUpPage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/resgister.html'))
 }
-const getProfilePage = (req, res) =>{
+const getProfilePage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/profile.html'))
 }
 
+const getUserData = (req, res) => {
+  const { user } = req;
+  console.log(user);
 
-module.exports = { signUp, signin,getSignUpPage,getProfilePage }
+  console.log(user.providerID);
+
+  getUserQuery(user.providerID).then(data => res.status(200).json(data.rows))
+}
+
+
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData }
