@@ -1,5 +1,5 @@
 const customError = require('../../helper/customError')
-const { signUpUserQuery, signInUserQuery, getUserQuery } = require('../../database/query/users')
+const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery } = require('../../database/query/users')
 const { join } = require('path')
 // const customError = require('../../helper/customError')
 const { signUpSchema, signinSchema } = require('../../schema/users.schema')
@@ -87,5 +87,12 @@ const getUserData = (req, res) => {
   getUserQuery(user.providerID).then(data => res.status(200).json(data.rows))
 }
 
+const updateUserData = (req, res)=>{
+  const { username, email, photo, date, country, phone, address } = req.body;
+  const { user } = req;
+  updateUserQuery({ username, email, photo, date, country, phone, address },user.providerID)
+  .then(data=> res.status(200).json('your data has been updated succssuflly brother'))
+}
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData,getSettingPage }
+
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData,getSettingPage,updateUserData}
