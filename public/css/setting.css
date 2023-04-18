@@ -1,0 +1,112 @@
+.sittingDiv{
+  width: 88%;
+  color: #fff;
+  display: flex;
+
+}
+
+.sittingTitle{
+  width: 15%;
+  display: flex;
+  align-items: center;
+}
+
+
+.aboutUser{
+  width: 60%;
+}
+
+ h2,h3{
+  text-align: center;
+  color: #f3efefca;
+  padding: 20px 20px;
+  font-size: 18px;
+}
+
+.sittingFrom{
+  display: grid;
+  grid-template-columns: repeat(1,1fr);
+  gap: 20px;
+  padding: 20px;
+
+}
+
+.sittingFrom label{
+  font-size: 17px;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+.sittingFrom input,.changePasswordForm input{
+  width: 100%;
+  height: 60px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  outline-width: 0;
+  font-size: 18px;
+  color: #fff;
+  background: rgb(26 26 27);
+  margin-top: 10px;
+}
+
+
+.sittingFrom div{
+  position: relative;
+}
+
+.sittingFrom .fa-user-pen{
+  position: absolute;
+  right: 60px;
+  top: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.sittingFrom .fa-user-check{
+  position: absolute;
+  right: 20px;
+  top: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.sittingFrom .fa-user-pen:hover{
+  color: blue;
+}
+.sittingFrom .fa-user-check:hover{
+  color: #ff5e62;
+}
+
+
+
+
+
+.changePasswordDiv{
+  width: 22%;
+}
+
+.changePasswordForm{
+  display: grid;
+  grid-template-columns: repeat(1,1fr);
+  gap: 23px;
+  padding: 20px;
+}
+
+.changePasswordForm button{
+  border: none;
+  outline: none;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  padding: 0.9rem 1rem;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  color: white;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+}
+
