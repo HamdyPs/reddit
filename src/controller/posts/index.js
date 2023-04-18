@@ -1,24 +1,11 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery,getSubredditNamesQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
 
-  const { title, description, photo, room,subredditTitle } = req.body;
+  const { title, description, photo,subredditTitle } = req.body;
   const { user } = req;
-  createPostQuery({ title, description, photo, room }, user)
-  .then(() => {
-    if(subredditTitle){
-      createSubredditQuery(subredditTitle,user.providerID).then(response=>{
-       return res.status(201).json('this Subreddit and post has been created successfuly')
-      })
-    }else{
-      res.status(201).json('your post has created succssfully')
-
-    }
-  })
-
-
-  
-  
+  createPostQuery({ title, description, photo,subredditTitle }, user)
+  .then(() => {res.status(201).json('your post has created succssfully')})
 
 }
 
@@ -96,14 +83,18 @@ const deletePost = (req, res) => {
     }))
 }
 
-// const createSubreddit = (req, res) => {
-//   const title = req.body;
-//   const { user } = req;
+const getSubredditNames = (req, res)=>{
+  getSubredditNamesQuery().then(response=> res.status(200).json(response.rows))
+}
 
+const createSubreddit = (req, res) => {
+  const {title} = req.body;
 
-//   createSubredditQuery(title, user.providerID).then(response => {
-//     res.status(201).json('this Subreddit has been created successfuly')
-//   })
-// }
+  const {user}= req;
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost, countryPosts, namePosts }
+  createSubredditQuery(title,user.providerID).then(response => {
+    res.status(201).json('this Subreddit has been created successfuly')
+  })
+}
+
+module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost, countryPosts, namePosts,createSubreddit,getSubredditNames }
