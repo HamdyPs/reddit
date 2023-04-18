@@ -87,12 +87,12 @@ const getUserData = (req, res) => {
   getUserQuery(user.providerID).then(data => res.status(200).json(data.rows))
 }
 
-const updateUserData = (req, res)=>{
-  const { username, email, photo, date, country, phone, address } = req.body;
+const updateUserData = (req, res) => {
+  const { username, email, photo, date, country, phone, address } = req.body.body;
   const { user } = req;
-  updateUserQuery({ username, email, photo, date, country, phone, address },user.providerID)
-  .then(data=> res.status(200).json('your data has been updated succssuflly brother'))
+  updateUserQuery({ username, email, photo, date, country, phone, address }, user.providerID)
+    .then(data => res.status(200).json('your data has been updated succssuflly brother'))
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData,getSettingPage,updateUserData}
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData }
