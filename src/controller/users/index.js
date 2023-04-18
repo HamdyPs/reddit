@@ -77,15 +77,15 @@ const getSignUpPage = (req, res) => {
 const getProfilePage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/profile.html'))
 }
+const getSettingPage = (req, res) => {
+  res.sendFile(join(__dirname, '../../../public/components/client/sitting.html'))
+}
 
 const getUserData = (req, res) => {
   const { user } = req;
-  console.log(user);
-
-  console.log(user.providerID);
 
   getUserQuery(user.providerID).then(data => res.status(200).json(data.rows))
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData }
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData,getSettingPage }
