@@ -222,9 +222,10 @@ const showComments = (data, commentsDiv, postId) => {
     if (inputComment.value === '') {
       return
     }
-    axios.post(`/api/comments/${postId}`, {
-      content: inputComment.value
-    }).then(response => {
+
+    const data = inputComment.value 
+    console.log(data);
+    axios.post(`/api/comments/${postId}`, {content:data}).then(response => {
       console.log(response);
     })
 
@@ -251,13 +252,7 @@ createPostForm.addEventListener('submit',(e)=>{
 	const data = Object.fromEntries(obj)
 
   console.log(data);
-  axios.post('/api/posts/',{
-    headers: {
-			'Accept': 'application/json, text/plain, */*',
-			'Content-Type': 'application/json'
-		},
-		body: data
-  })
+  axios.post('/api/posts/', data)
 
   axios.get(`/api/posts/user`).then(response => {
     renderPost(response.data)

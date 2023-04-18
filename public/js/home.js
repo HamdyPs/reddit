@@ -207,9 +207,11 @@ const showComments = (data, commentsDiv, postId) => {
     if (inputComment.value === '') {
       return
     }
-    axios.post(`/api/comments/${postId}`, {
-      content: inputComment.value
-    }).then(response => {
+
+    console.log(inputComment.value);
+
+    const data = inputComment.value
+    axios.post(`/api/comments/${postId}`,  {content:data}).then(response => {
       console.log(response);
     })
 
