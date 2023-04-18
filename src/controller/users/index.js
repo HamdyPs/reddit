@@ -80,6 +80,9 @@ const getProfilePage = (req, res) => {
 const getSettingPage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/sitting.html'))
 }
+const getGamesPage = (req, res) => {
+  res.sendFile(join(__dirname, '../../../public/components/client/games.html'))
+}
 
 const getUserData = (req, res) => {
   const { user } = req;
@@ -112,8 +115,8 @@ const updatePasswordUser = (req, res) => {
  })
     
   })
-  // updatePasswordQuery(newPassword)
+  
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData,updatePasswordUser }
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getGamesPage }

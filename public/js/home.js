@@ -254,7 +254,6 @@ countrySelect.addEventListener('change', (e) => {
 axios.get('/api/apis/games').then(response=> homeApi(response.data))
 
 const homeApi = (data)=>{
-  console.log(data);
   data.forEach(api=>{
     // create a div element
 const div = document.createElement('div');
@@ -277,3 +276,12 @@ div.appendChild(img);
 news_api.appendChild(div)
   })
 }
+
+const rooms = document.querySelectorAll('.rooms')
+rooms.forEach(room=>{
+  room.addEventListener('click',()=>{
+    axios.get(`/api/posts/room/${room.textContent}`).then(response=>{
+      console.log(response.data);
+    })
+  })
+})
