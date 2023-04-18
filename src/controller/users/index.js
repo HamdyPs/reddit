@@ -95,6 +95,7 @@ const updateUserData = (req, res) => {
 }
 const updatePasswordUser = (req, res) => {
   const { password,newPassword } = req.body;
+  console.log(req.body);
   const { user } = req;
   getUserQuery(user.providerID).then(data=>{
  bcrypt.compare(password,data.rows[0].password).then(isValidated=>{

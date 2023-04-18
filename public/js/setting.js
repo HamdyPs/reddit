@@ -6,6 +6,7 @@ const date = document.querySelector('.date');
 const country = document.querySelector('.country');
 const phone = document.querySelector('.phone');
 const address = document.querySelector('.address');
+const changePasswordForm = document.querySelector('.changePasswordForm');
 const uncheckedIcon = document.querySelectorAll('.fa-user-pen');
 const checkedIcon = document.querySelectorAll('.fa-user-check');
 axios.get('/api/users/sitting').then(response => {
@@ -53,3 +54,12 @@ checkedIcon.forEach(icon => {
   })
 })
 
+
+changePasswordForm.addEventListener('submit',(e)=>{
+  e.preventDefault()
+
+  const obj = new FormData(changePasswordForm);
+	const data = Object.fromEntries(obj)
+  console.log(data);
+  axios.put('/api/users/resetPassword',data).then(response=>console.log(response))
+})
