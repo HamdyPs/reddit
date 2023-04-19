@@ -7,13 +7,11 @@ const userNameAcoount = document.querySelector('.userNameAcoount')
 const news_api = document.querySelector('.news-api')
 
 axios.get('/api/users/sitting').then(response=>{
-  console.log(response.data);
   userNameAcoount.textContent = response.data[0].username;
   
 })
 
 const createPost = (data) => {
-  console.log(data);
   posts_container.innerHTML = ''
   data.forEach(post => {
     const blogPost = document.createElement('div');
@@ -112,7 +110,6 @@ const createPost = (data) => {
 
     rightArrowBtn.addEventListener('click', () => {
       axios.get(`/api/comments/user/${post.id}`).then(response => {
-        // console.log(response);
       })
       axios.get(`/api/comments/${post.id}`).then(response => {
         showVote(post.id, votesCount)
@@ -215,7 +212,6 @@ const showComments = (data, commentsDiv, postId) => {
       return
     }
 
-    console.log(inputComment.value);
 
     const data = inputComment.value
     axios.post(`/api/comments/${postId}`,  {content:data}).then(response => {
@@ -284,8 +280,10 @@ news_api.appendChild(div)
   })
 }
 
+
+
+
 axios.get('/api/posts/subreddits/names').then(data=>{
-  console.log(data.data);
   others.innerHTML =''
   data.data.forEach(sub=>{
     const liElement = document.createElement('li');
@@ -295,15 +293,25 @@ axios.get('/api/posts/subreddits/names').then(data=>{
     liElement.appendChild(aElement);
     aElement.appendChild(iElement);
     
-    aElement.setAttribute('href', '/api/users/games');
     iElement.classList.add('fa-solid', 'fa-reply-all');
     aElement.textContent = sub.subreddittitle;
+    aElement.setAttribute('href', `/api/users/subreddits/${aElement.textContent}`);
+// aElement.addEventListener('click',()=>{
+
+//   axios.get(`/api/users/subreddits/${aElement.textContent}`).then(response=>{
+//     console.log(response);
+    
+//   })
+// })
     others.appendChild(liElement)
   })
 
   
  
 })
+
+
+
 
 
 const subredditsForm = document.querySelector('.subredditsForm')
@@ -314,7 +322,6 @@ CreateSubreddit.addEventListener('click',()=>{
     e.preventDefault()
     const obj = new FormData(subredditsForm);
     const data = Object.fromEntries(obj)
-    console.log(data.subredditTitle);
     axios.post('/api/posts/subreddit',data).then(response=>{
       console.log(response);
     })

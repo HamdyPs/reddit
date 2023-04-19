@@ -158,6 +158,32 @@ const getSubredditNamesQuery = ()=>{
 
   return connection.query(sql);
 }
+const getSubredditPostsQuery = (subredditTitle)=>{
+  let subredditPostsquery = `select
+  p.title,
+  p.description,
+  p.photo,
+  u.photo,
+  u.username,
+  p.created_at,
+  p.user_id,
+  p.id
+  from posts p
+  join users u
+  on p.user_id = u.id
+  join subreddits s 
+  on p.subredditTitle = s.subredditTitle
+  where p.subredditTitle = $1 
+  `
+
+  const sql = {
+    text: subredditPostsquery,
+    values:[subredditTitle]
+  };
 
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery }
+  return connection.query(sql);
+}
+
+
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery }
