@@ -80,8 +80,9 @@ const getProfilePage = (req, res) => {
 const getSettingPage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/sitting.html'))
 }
-const getGamesPage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/games.html'))
+const getSubredditsPage = (req, res) => {
+  console.log(req.params);
+  res.sendFile(join(__dirname, '../../../public/components/client/subreddits.html'))
 }
 
 const getUserData = (req, res) => {
@@ -98,7 +99,6 @@ const updateUserData = (req, res) => {
 }
 const updatePasswordUser = (req, res) => {
   const { password,newPassword } = req.body;
-  console.log(req.body);
   const { user } = req;
   getUserQuery(user.providerID).then(data=>{
  bcrypt.compare(password,data.rows[0].password).then(isValidated=>{
@@ -119,4 +119,4 @@ const updatePasswordUser = (req, res) => {
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getGamesPage }
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage }
