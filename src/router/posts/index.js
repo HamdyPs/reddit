@@ -8,8 +8,8 @@ postsRouter.get('/user', auth, getUserPosts);
 postsRouter.get('/:postId', auth, getPost);
 postsRouter.get('/', getPosts);
 // postsRouter.get('/subreddits', createSubreddit);
-postsRouter.get('/postCountry/:country', countryPosts);
-postsRouter.get('/postname/:postname', namePosts);
+postsRouter.get('/postCountry/:country',auth, countryPosts);
+postsRouter.get('/postname/:postname',auth, namePosts);
 postsRouter.get('/subreddits/names', getSubredditNames);
 postsRouter.post('/subreddit',auth, createSubreddit);
 
