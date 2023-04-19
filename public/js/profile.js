@@ -11,6 +11,13 @@ axios.get(`/api/posts/user`).then(response => {
   renderPost(response.data)
 })
 
+axios.get('/api/users/sitting').then(response=>{
+  console.log(response.data);
+  userNameAcoount.textContent = response.data[0].username;
+  userNameProfile.textContent = response.data[0].username;
+
+})
+
 const renderPost = (posts)=>{
   console.log(posts);
   posts.forEach(post => {
@@ -37,8 +44,6 @@ const renderPost = (posts)=>{
 
     const userName = document.createElement('h3');
     userName.textContent = post.username;
-    userNameProfile.textContent = post.username;
-    userNameAcoount.textContent = post.username;
     userPost.appendChild(userName);
 
     const postDate = document.createElement('h3');
@@ -109,6 +114,20 @@ const renderPost = (posts)=>{
     commentsCount.classList.add('comments-nums');
     commentsCount.textContent = '20';
 
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('deletePost');
+    deleteBtn.textContent = 'delete';
+
+    deleteBtn.addEventListener('click',()=>{
+      axios.delete(`/api/posts/${post.id}`).then(response=>{
+        console.log(response.data.message);
+        axios.get(`/api/posts/user`).then(response => {
+          renderPost(response.data)
+        })
+        location.reload()
+      })
+    })
+    inputsPost.appendChild(deleteBtn)
     rightArrowBtn.addEventListener('click', () => {
       axios.get(`/api/comments/user/${post.id}`).then(response => {
         // console.log(response);
