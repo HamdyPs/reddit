@@ -251,16 +251,6 @@ main{
   font-size: 16px;
 }
 
-.allUserPosts{
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  padding: 60px 20px;
-}
-
 .userCreatePostDiv{
   display: none;
   transition: 0.5s ease-in-out;

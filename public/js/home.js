@@ -5,7 +5,10 @@ const others = document.querySelector('.others')
 const CreateSubreddit = document.querySelector('.CreateSubreddit')
 const userNameAcoount = document.querySelector('.userNameAcoount')
 const news_api = document.querySelector('.news-api')
+const subredditsForm = document.querySelector('.subredditsForm')
 
+
+//userNameAcoount.textContent = post.username;
 
 const createPost = (data) => {
   console.log(data);
@@ -34,7 +37,7 @@ const createPost = (data) => {
 
     const userName = document.createElement('h3');
     userName.textContent = post.username;
-    userNameAcoount.textContent = post.username;
+    
 
     userPost.appendChild(userName);
 
@@ -302,7 +305,6 @@ axios.get('/api/posts/subreddits/names').then(data=>{
 })
 
 
-const subredditsForm = document.querySelector('.subredditsForm')
 CreateSubreddit.addEventListener('click',()=>{
   subredditsForm.style.display = 'flex'
 
