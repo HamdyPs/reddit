@@ -3,6 +3,7 @@ const allUserPosts = document.querySelector('.allUserPosts')
 const userNameProfile = document.querySelector('.userNameProfile')
 const userNameAcoount = document.querySelector('.userNameAcoount')
 const createPostBtn = document.querySelector('.createPost')
+const selectPost = document.querySelector('.selectPost')
 const userCreatePostDiv = document.querySelector('.userCreatePostDiv')
 const createPostForm = document.querySelector('.createPostForm')
 
@@ -244,6 +245,13 @@ const showComments = (data, commentsDiv, postId) => {
 
 createPostBtn.addEventListener('click',()=>{
   userCreatePostDiv.style.display = 'block'
+
+  const selectElement = document.createElement('select');
+  selectElement.classList.add('inputFields');
+  selectElement.setAttribute('name', 'subredditTitle');
+  selectDiv(selectElement)
+  selectPost.appendChild(selectElement)
+
 })
 
 createPostForm.addEventListener('submit',(e)=>{
@@ -262,3 +270,15 @@ createPostForm.addEventListener('submit',(e)=>{
   userCreatePostDiv.style.display = 'none'
 
 })
+
+const selectDiv =(selectElement)=>{
+
+  axios.get('/api/posts/subreddits/names').then(data=>{
+    data.data.forEach(sub=>{
+      const optionElement = document.createElement('option');
+    optionElement.textContent = sub.subreddittitle;
+    selectElement.appendChild(optionElement);
+    })
+   
+  })
+}

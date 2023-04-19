@@ -1,8 +1,11 @@
 
 const posts_container = document.querySelector('.posts-container')
 const countrySelect = document.querySelector('.country')
+const others = document.querySelector('.others')
+const CreateSubreddit = document.querySelector('.CreateSubreddit')
 const userNameAcoount = document.querySelector('.userNameAcoount')
 const news_api = document.querySelector('.news-api')
+
 
 const createPost = (data) => {
   console.log(data);
@@ -277,11 +280,44 @@ news_api.appendChild(div)
   })
 }
 
-const rooms = document.querySelectorAll('.rooms')
-rooms.forEach(room=>{
-  room.addEventListener('click',()=>{
-    axios.get(`/api/posts/room/${room.textContent}`).then(response=>{
-      console.log(response.data);
-    })
+axios.get('/api/posts/subreddits/names').then(data=>{
+  console.log(data.data);
+  others.innerHTML =''
+  data.data.forEach(sub=>{
+    const liElement = document.createElement('li');
+    const aElement = document.createElement('a');
+    const iElement = document.createElement('i');
+    
+    liElement.appendChild(aElement);
+    aElement.appendChild(iElement);
+    
+    aElement.setAttribute('href', '/api/users/games');
+    iElement.classList.add('fa-solid', 'fa-reply-all');
+    aElement.textContent = sub.subreddittitle;
+    others.appendChild(liElement)
   })
+
+  
+ 
+})
+
+
+const subredditsForm = document.querySelector('.subredditsForm')
+CreateSubreddit.addEventListener('click',()=>{
+  subredditsForm.style.display = 'flex'
+
+  subredditsForm.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    const obj = new FormData(subredditsForm);
+    const data = Object.fromEntries(obj)
+    console.log(data.subredditTitle);
+    axios.post('/api/posts/subreddit',data).then(response=>{
+      console.log(response);
+    })
+
+    subredditsForm.style.display = 'none'
+
+  })
+
+  
 })
