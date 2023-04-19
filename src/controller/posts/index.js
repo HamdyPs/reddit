@@ -88,11 +88,11 @@ const getSubredditNames = (req, res)=>{
 }
 
 const createSubreddit = (req, res) => {
-  const {title} = req.body;
-
+  const {subredditTitle} = req.body;
+  console.log(subredditTitle);
   const {user}= req;
 
-  createSubredditQuery(title,user.providerID).then(response => {
+  createSubredditQuery(subredditTitle,user.providerID).then(response => {
     res.status(201).json('this Subreddit has been created successfuly')
   })
 }

@@ -266,7 +266,7 @@ h1 {
   gap: 10px;
 }
 
-.votes button{
+.votes button,.CreateSubreddit{
     border: none;
   outline: none;
   background: linear-gradient(90deg, #ff9966, #ff5e62);
@@ -525,7 +525,7 @@ backdrop-filter: blur(4.9px);
   gap: 20px;
 }
 
-.apis button{
+.apis button, .subredditsForm button{
     border: none;
   outline: none;
   background: linear-gradient(90deg, #ca8b39, #ee980f);
@@ -537,5 +537,33 @@ backdrop-filter: blur(4.9px);
   text-decoration: none;
   cursor: pointer;
   font-size: 16px;
-  width: 200px;
 }
+
+.subredditsForm{
+  position: absolute;
+  top: 14%;
+  right: 230px;
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: rgb(26 26 27);
+  width: 300px;
+  height: 200px;
+}
+
+.subredditsForm h2{
+  color: #f3efef;
+  text-align: center;
+}
+
+.subredditsForm input{
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: none;
+  outline-width: 0;
+  font-size: 17px;
+  color: #fff;
+  background:linear-gradient(to right, #292929, #2d2c2f);
+}
+
