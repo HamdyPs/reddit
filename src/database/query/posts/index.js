@@ -3,12 +3,12 @@ const connection = require('../../config');
 
 const createPostQuery = (postData, user) => {
 
-  const { title, description, photo,subredditTitle } = postData;
+  const { title, description, photo, subredditTitle } = postData;
   const userId = user.providerID
   const sql = {
     text: `INSERT INTO posts (title, description, photo, user_id,subredditTitle)
      VALUES ($1 , $2, $3, $4,$5)`,
-    values: [title, description, photo, userId,subredditTitle]
+    values: [title, description, photo, userId, subredditTitle]
   }
 
   return connection.query(sql)
@@ -83,7 +83,7 @@ const commentQuery = (postId) => {
   return connection.query(commentSql)
 }
 
-const countryPostsQuery = (country)=>{
+const countryPostsQuery = (country) => {
   let countryquery = `select 
   p.title,
   p.description,
@@ -105,7 +105,7 @@ join users u
   return connection.query(sql)
 
 }
-const namePostsQuery = (postName)=>{
+const namePostsQuery = (postName) => {
   let namequery = `select 
   p.title,
   p.description,
@@ -137,18 +137,18 @@ const deletePostQuery = (postId) => {
 
 }
 
-const createSubredditQuery = (subredditTitle,userId)=>{
+const createSubredditQuery = (subredditTitle, userId) => {
   const subredditQuery = `insert into subreddits (subredditTitle,user_id) values ($1,$2)`
 
   const sql = {
     text: subredditQuery,
-    values: [subredditTitle,userId]
+    values: [subredditTitle, userId]
   }
   return connection.query(sql);
 
 }
 
-const getSubredditNamesQuery = ()=>{
+const getSubredditNamesQuery = () => {
   let subredditNamequery = `select * from subreddits`
 
   const sql = {
@@ -159,5 +159,40 @@ const getSubredditNamesQuery = ()=>{
   return connection.query(sql);
 }
 
+const getSubredditPostQuery = (subredditTitle,userId) => {
+  let query = `select 
+  p.title,
+  p.description,
+  p.photo,
+  u.photo,
+  u.username,
+  p.created_at,
+  p.user_id,
+  p.id
+from posts p 
+join users u
+  on u.id = p.user_id
+  join subreddits s
+  on s.subredditTitle = $1
+  where u.id = $2 and s.subredditTitle = p.subredditTitle`
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery }
+  const sql = {
+    text: query,
+    values: [subredditTitle, userId]
+  };
+  return connection.query(sql);
+}
+
+
+module.exports = {
+  createPostQuery,
+  getPostsQuery,
+  deletePostQuery,
+  getPostQuery,
+  commentQuery,
+  countryPostsQuery,
+  namePostsQuery,
+  createSubredditQuery,
+  getSubredditNamesQuery,
+  getSubredditPostQuery
+}

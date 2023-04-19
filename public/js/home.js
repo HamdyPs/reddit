@@ -111,7 +111,6 @@ const createPost = (data) => {
 
     rightArrowBtn.addEventListener('click', () => {
       axios.get(`/api/comments/user/${post.id}`).then(response => {
-        // console.log(response);
       })
       axios.get(`/api/comments/${post.id}`).then(response => {
         showVote(post.id, votesCount)
@@ -214,11 +213,10 @@ const showComments = (data, commentsDiv, postId) => {
       return
     }
 
-    console.log(inputComment.value);
 
     const data = inputComment.value
     axios.post(`/api/comments/${postId}`,  {content:data}).then(response => {
-      console.log(response);
+   
     })
 
 
@@ -257,34 +255,33 @@ countrySelect.addEventListener('change', (e) => {
   })
 })
 
-axios.get('/api/apis/games').then(response=> homeApi(response.data))
+// axios.get('/api/apis/games').then(response=> homeApi(response.data))
 
-const homeApi = (data)=>{
-  data.forEach(api=>{
-    // create a div element
-const div = document.createElement('div');
-div.classList.add('new'); // add 'new' class to the div element
+// const homeApi = (data)=>{
+//   data.forEach(api=>{
+//     // create a div element
+// const div = document.createElement('div');
+// div.classList.add('new'); // add 'new' class to the div element
 
-// create a p element
-const a = document.createElement('a');
-a.setAttribute('target','_blank')
-a.href = api.game_url;
-a.innerText = api.title; // set the text content of the p element
+// // create a p element
+// const a = document.createElement('a');
+// a.setAttribute('target','_blank')
+// a.href = api.game_url;
+// a.innerText = api.title; // set the text content of the p element
 
-// create an img element
-const img = document.createElement('img');
-img.src = api.thumbnail; // set the src attribute of the img element
-img.alt = 'news'; // set the alt attribute of the img element
+// // create an img element
+// const img = document.createElement('img');
+// img.src = api.thumbnail; // set the src attribute of the img element
+// img.alt = 'news'; // set the alt attribute of the img element
 
-// append the p and img elements to the div element
-div.appendChild(a);
-div.appendChild(img);
-news_api.appendChild(div)
-  })
-}
+// // append the p and img elements to the div element
+// div.appendChild(a);
+// div.appendChild(img);
+// news_api.appendChild(div)
+//   })
+// }
 
 axios.get('/api/posts/subreddits/names').then(data=>{
-  console.log(data.data);
   others.innerHTML =''
   data.data.forEach(sub=>{
     const liElement = document.createElement('li');
@@ -295,8 +292,17 @@ axios.get('/api/posts/subreddits/names').then(data=>{
     aElement.appendChild(iElement);
     
     aElement.setAttribute('href', '/api/users/games');
+    aElement.classList.add('room')
     iElement.classList.add('fa-solid', 'fa-reply-all');
     aElement.textContent = sub.subreddittitle;
+
+    aElement.addEventListener('click',()=>{
+      axios.get(`/api/posts/subreddit/${aElement.textContent}`).then(response=>{
+        createPost(response.data);
+       })
+   
+    })
+
     others.appendChild(liElement)
   })
 
@@ -305,21 +311,19 @@ axios.get('/api/posts/subreddits/names').then(data=>{
 })
 
 
-CreateSubreddit.addEventListener('click',()=>{
-  subredditsForm.style.display = 'flex'
+// CreateSubreddit.addEventListener('click',()=>{
+//   subredditsForm.style.display = 'flex'
 
-  subredditsForm.addEventListener('submit',(e)=>{
-    e.preventDefault()
-    const obj = new FormData(subredditsForm);
-    const data = Object.fromEntries(obj)
-    console.log(data.subredditTitle);
-    axios.post('/api/posts/subreddit',data).then(response=>{
-      console.log(response);
-    })
+//   subredditsForm.addEventListener('submit',(e)=>{
+//     e.preventDefault()
+//     const obj = new FormData(subredditsForm);
+//     const data = Object.fromEntries(obj)
+//     axios.post('/api/posts/subreddit',data).then(response=>{
+//     })
 
-    subredditsForm.style.display = 'none'
+//     subredditsForm.style.display = 'none'
 
-  })
+//   })
 
   
-})
+// })

@@ -1,11 +1,22 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery,getSubredditNamesQuery } = require('../../database/query/posts')
+const { 
+  createPostQuery,
+  getPostsQuery,
+  deletePostQuery,
+  getPostQuery,
+  commentQuery,
+  countryPostsQuery,
+  createSubredditQuery,
+  getSubredditNamesQuery,
+  getSubredditPostQuery
+} = require('../../database/query/posts')
+
 const createPost = (req, res) => {
 
-  const { title, description, photo,subredditTitle } = req.body;
+  const { title, description, photo, subredditTitle } = req.body;
   const { user } = req;
-  createPostQuery({ title, description, photo,subredditTitle }, user)
-  .then(() => {res.status(201).json('your post has created succssfully')})
+  createPostQuery({ title, description, photo, subredditTitle }, user)
+    .then(() => { res.status(201).json('your post has created succssfully') })
 
 }
 
@@ -83,18 +94,38 @@ const deletePost = (req, res) => {
     }))
 }
 
-const getSubredditNames = (req, res)=>{
-  getSubredditNamesQuery().then(response=> res.status(200).json(response.rows))
+const getSubredditNames = (req, res) => {
+  getSubredditNamesQuery().then(response => res.status(200).json(response.rows))
 }
 
 const createSubreddit = (req, res) => {
-  const {subredditTitle} = req.body;
+  const { subredditTitle } = req.body;
   console.log(subredditTitle);
-  const {user}= req;
+  const { user } = req;
 
-  createSubredditQuery(subredditTitle,user.providerID).then(response => {
+  createSubredditQuery(subredditTitle, user.providerID).then(response => {
     res.status(201).json('this Subreddit has been created successfuly')
   })
 }
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost, countryPosts, namePosts,createSubreddit,getSubredditNames }
+const getSubredditPosts = (req, res) => {
+  const room = req.params.room
+  const { user } = req;
+
+  getSubredditPostQuery(room, user.providerID).then(response =>{
+     res.status(200).json(response.rows)
+    })
+}
+
+module.exports = {
+  createPost,
+  getUserPosts,
+  getPosts,
+  deletePost,
+  getPost,
+  countryPosts,
+  namePosts,
+  createSubreddit,
+  getSubredditNames,
+  getSubredditPosts
+}
