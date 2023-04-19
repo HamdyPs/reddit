@@ -6,6 +6,11 @@ const CreateSubreddit = document.querySelector('.CreateSubreddit')
 const userNameAcoount = document.querySelector('.userNameAcoount')
 const news_api = document.querySelector('.news-api')
 
+axios.get('/api/users/sitting').then(response=>{
+  console.log(response.data);
+  userNameAcoount.textContent = response.data[0].username;
+  
+})
 
 const createPost = (data) => {
   console.log(data);
@@ -34,7 +39,6 @@ const createPost = (data) => {
 
     const userName = document.createElement('h3');
     userName.textContent = post.username;
-    userNameAcoount.textContent = post.username;
 
     userPost.appendChild(userName);
 
@@ -321,3 +325,4 @@ CreateSubreddit.addEventListener('click',()=>{
 
   
 })
+

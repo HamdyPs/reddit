@@ -345,3 +345,20 @@ main{
   background: rgba(20, 20, 20, .8);
   padding: 10px 80px;
 }
+
+.deletePost{
+  border: none;
+  outline: none;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  padding: 0.3rem 1rem;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  color: white;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

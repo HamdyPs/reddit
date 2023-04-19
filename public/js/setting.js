@@ -9,6 +9,14 @@ const address = document.querySelector('.address');
 const changePasswordForm = document.querySelector('.changePasswordForm');
 const uncheckedIcon = document.querySelectorAll('.fa-user-pen');
 const checkedIcon = document.querySelectorAll('.fa-user-check');
+const userNameAcoount = document.querySelector('.userNameAcoount')
+
+axios.get('/api/users/sitting').then(response=>{
+  console.log(response.data);
+  userNameAcoount.textContent = response.data[0].username;
+
+})
+
 axios.get('/api/users/sitting').then(response => {
   username.value = response.data[0].username;
   email.value = response.data[0].email;
