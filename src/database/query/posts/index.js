@@ -41,6 +41,27 @@ join users u
 };
 
 
+const getUsersPostsQuery = (userId) => {
+  let usersPostsquery = `select 
+  p.title,
+  p.description,
+  p.photo,
+  u.photo,
+  u.username,
+  p.created_at,
+  p.user_id,
+  p.id
+from posts p 
+join users u
+  on u.id = p.user_id where u.id = $1`
+  const sql = {
+    text: usersPostsquery,
+    values:  [userId] 
+  };
+  return connection.query(sql);
+};
+
+
 const getPostQuery = (postId) => {
   let query = `select 
   p.id,
@@ -186,4 +207,4 @@ const getSubredditPostsQuery = (subredditTitle)=>{
 }
 
 
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery }
+module.exports = { createPostQuery, getPostsQuery: getPostsQuery,getUsersPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery }

@@ -230,11 +230,22 @@ border: 1px solid rgba(255, 255, 255, 0.18);
   object-fit: cover;
 }
 
+a {
+  margin: 0 0 0.5rem 0;
+  color: #f6f6f6ea;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-decoration: none;
+}
 h3 {
   margin: 0 0 0.5rem 0;
   color: #f6f6f6ea;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 600;
+}
+
+a:hover{
+  color: blue;
 }
 
 h1 {

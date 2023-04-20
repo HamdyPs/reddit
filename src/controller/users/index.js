@@ -81,8 +81,10 @@ const getSettingPage = (req, res) => {
   res.sendFile(join(__dirname, '../../../public/components/client/sitting.html'))
 }
 const getSubredditsPage = (req, res) => {
-  console.log(req.params);
   res.sendFile(join(__dirname, '../../../public/components/client/subreddits.html'))
+}
+const getProfilesPage = (req, res) => {
+  res.sendFile(join(__dirname, '../../../public/components/client/profiles.html'))
 }
 
 const getUserData = (req, res) => {
@@ -119,4 +121,4 @@ const updatePasswordUser = (req, res) => {
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage }
+module.exports = { signUp, signin, getSignUpPage, getProfilePage,getProfilesPage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage }

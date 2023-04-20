@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <title>Document</title>
+</head>
+<body>
+  <nav>
+    <div class="profile">
+    <div class="profile-icon">
+      <i class="fa-brands fa-reddit"></i>
+      <i class="fa-solid fa-arrow-down"></i>
+    </div>
+    </div>
+    <div class="searchbar">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" class="search-inp" placeholder="search reddit">
+    </div>
+
+    <div class="userLogo">
+      <img src="/logo.png" alt="user photo">
+      <h3 class="userNameAcoount">username</h3>
+    </div>
+    
+  </nav>
+  <main>
+    <div class="sidebar">
+      <div class="searchPost">
+        <input type="text" placeholder="filter">
+      </div>
+
+        <ul class="feeds">
+          <li><a href="/"><i class="fa-solid fa-house"></i>home</a></li>
+          <li><a href="/api/users/profile"><i class="fa-solid fa-house"></i>profile</a></li>
+          <li><a href="#"><i class="fa-solid fa-fire"></i>Popular</a></li>
+          <li><a href="#"><i class="fa-solid fa-reply-all"></i>All</a></li>
+        </ul>
+    </div>
+
+    <div class="profileUser">
+      <div class="prfileHeader">
+
+        <div class="wallpaper">
+          <img src="/logo.png" alt="wallpaper">
+        </div>
+
+        <div class="userDetails">
+
+          <div class="userImg">
+            <img src="/logo.png" alt="userImg">
+          </div>
+
+          <div class="userInfo">
+            <h2 class="userNameProfile"></h2>
+            <button>add friend</button>
+          </div>
+
+        </div>
+
+      </div>
+
+        <div class="allUserPosts">
+ 
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
+  <script src="/js/profiles.js"></script>
+</body>
+</html>
