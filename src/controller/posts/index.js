@@ -1,5 +1,5 @@
 // const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery } = require('../../database/query/posts')
+const { createPostQuery, getPostsQuery,getUsersPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery } = require('../../database/query/posts')
 const createPost = (req, res) => {
 
   const { title, description, photo,subredditTitle } = req.body;
@@ -13,6 +13,16 @@ const getUserPosts = (req, res) => {
   const { user } = req;
 
   getPostsQuery(user.providerID)
+    .then((data) => {
+      res.status(200).json(data.rows)
+    })
+}
+
+
+const getUsersPosts = (req, res) => {
+  const userId= req.params.userId;
+
+  getUsersPostsQuery(userId)
     .then((data) => {
       res.status(200).json(data.rows)
     })
@@ -104,4 +114,4 @@ const getSubredditPosts = (req ,res)=>{
   getSubredditPostsQuery(subredditTitle).then(response=>res.status(200).json(response.rows))
 }
 
-module.exports = { createPost, getUserPosts, getPosts, deletePost, getPost, countryPosts, namePosts,createSubreddit,getSubredditNames,getSubredditPosts }
+module.exports = { createPost, getUserPosts,getUsersPosts, getPosts, deletePost, getPost, countryPosts, namePosts,createSubreddit,getSubredditNames,getSubredditPosts }

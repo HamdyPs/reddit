@@ -1,11 +1,12 @@
 const userRouter = require('express').Router();
-const { signUp, signin, getSignUpPage,getProfilePage, getUserData,getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage} = require('../../controller/users')
+const { signUp, signin, getSignUpPage,getProfilePage, getUserData,getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage,getProfilesPage} = require('../../controller/users')
 const auth = require('../../helper/auth');
 
 userRouter.post('/signup', signUp);
 userRouter.post('/signin', signin);
 userRouter.get('/resgister', getSignUpPage)
 userRouter.get('/profile',auth, getProfilePage)
+userRouter.get('/profiles/:userId',auth, getProfilesPage)
 userRouter.get('/profileSitting',auth, getSettingPage)
 userRouter.get('/sitting',auth, getUserData)
 userRouter.put('/update',auth, updateUserData)

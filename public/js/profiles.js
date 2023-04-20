@@ -1,20 +1,23 @@
 
-const posts_container = document.querySelector('.posts-container')
-const countrySelect = document.querySelector('.country')
-const others = document.querySelector('.others')
-const CreateSubreddit = document.querySelector('.CreateSubreddit')
+const allUserPosts = document.querySelector('.allUserPosts')
+const userNameProfile = document.querySelector('.userNameProfile')
 const userNameAcoount = document.querySelector('.userNameAcoount')
-const news_api = document.querySelector('.news-api')
-
-axios.get('/api/users/sitting').then(response=>{
-  userNameAcoount.textContent = response.data[0].username;
-  
+const userId = window.location.href.split('http://localhost:4000/api/users/profiles/')[1]
+console.log(userId);
+axios.get(`/api/posts/user/${userId}`).then(response => {
+  renderPost(response.data)
 })
 
-const createPost = (data) => {
-  console.log(data);
-  posts_container.innerHTML = ''
-  data.forEach(post => {
+// axios.get('/api/users/sitting').then(response=>{
+//   console.log(response.data);
+//   userNameAcoount.textContent = response.data[0].username;
+//   userNameProfile.textContent = response.data[0].username;
+
+// })
+
+const renderPost = (posts) => {
+  console.log(posts);
+  posts.forEach(post => {
     const blogPost = document.createElement('div');
     blogPost.classList.add('blog_post');
 
@@ -36,10 +39,10 @@ const createPost = (data) => {
     userPost.classList.add('userPost');
     containerCopy.appendChild(userPost);
 
-    const userName = document.createElement('a');
+    const userName = document.createElement('h3');
     userName.textContent = post.username;
-    userName.setAttribute('href',`/api/users/profiles/${post.user_id}`)
-
+    userNameAcoount.textContent = post.username;
+    userNameProfile.textContent = post.username;
     userPost.appendChild(userName);
 
     const postDate = document.createElement('h3');
@@ -110,8 +113,23 @@ const createPost = (data) => {
     commentsCount.classList.add('comments-nums');
     commentsCount.textContent = '20';
 
+    // const deleteBtn = document.createElement('button');
+    // deleteBtn.classList.add('deletePost');
+    // deleteBtn.textContent = 'delete';
+
+    // deleteBtn.addEventListener('click',()=>{
+    //   axios.delete(`/api/posts/${post.id}`).then(response=>{
+    //     console.log(response.data.message);
+    //     axios.get(`/api/posts/user`).then(response => {
+    //       renderPost(response.data)
+    //     })
+    //     location.reload()
+    //   })
+    // })
+    // inputsPost.appendChild(deleteBtn)
     rightArrowBtn.addEventListener('click', () => {
       axios.get(`/api/comments/user/${post.id}`).then(response => {
+        // console.log(response);
       })
       axios.get(`/api/comments/${post.id}`).then(response => {
         showVote(post.id, votesCount)
@@ -129,7 +147,7 @@ const createPost = (data) => {
     commentsDiv.classList.add("comments");
     blogPost.appendChild(commentsDiv)
 
-    posts_container.appendChild(blogPost)
+    allUserPosts.appendChild(blogPost)
 
     commentsBtn.addEventListener('click', () => {
 
@@ -140,9 +158,19 @@ const createPost = (data) => {
 
 
   });
-
 }
 
+const showVote = (post, votesCount) => {
+  axios.get(`/api/comments/${post}`).then(response => {
+    if (response.data.voteCount > 0) {
+      votesCount.textContent = response.data.voteCount;
+
+    } else {
+      votesCount.textContent = '0'
+
+    }
+  })
+}
 
 const showComments = (data, commentsDiv, postId) => {
   commentsDiv.innerHTML = ''
@@ -158,7 +186,7 @@ const showComments = (data, commentsDiv, postId) => {
 
     const img = document.createElement("img");
     img.classList.add("comment-user-photo");
-    img.src = "logo.png";
+    img.src = "../../logo.png";
 
     const userName = document.createElement("p");
     userName.classList.add("comment-user-name");
@@ -214,9 +242,9 @@ const showComments = (data, commentsDiv, postId) => {
       return
     }
 
-
     const data = inputComment.value
-    axios.post(`/api/comments/${postId}`,  {content:data}).then(response => {
+    console.log(data);
+    axios.post(`/api/comments/${postId}`, { content: data }).then(response => {
       console.log(response);
     })
 
@@ -233,105 +261,4 @@ const showComments = (data, commentsDiv, postId) => {
 
 }
 
-axios.get('/api/posts/').then(response => {
-  createPost(response.data)
-})
-
-
-const showVote = (post, votesCount) => {
-  axios.get(`/api/comments/${post}`).then(response => {
-    if (response.data.voteCount > 0) {
-      votesCount.textContent = response.data.voteCount;
-
-    } else {
-      votesCount.textContent = '0'
-
-    }
-  })
-}
-
-countrySelect.addEventListener('change', (e) => {
-  axios.get(`/api/posts/postCountry/${e.target.value}`).then(response => {
-    createPost(response.data)
-  })
-})
-
-axios.get('/api/apis/games').then(response=> homeApi(response.data))
-
-const homeApi = (data)=>{
-  data.forEach(api=>{
-    // create a div element
-const div = document.createElement('div');
-div.classList.add('new'); // add 'new' class to the div element
-
-// create a p element
-const a = document.createElement('a');
-a.setAttribute('target','_blank')
-a.href = api.game_url;
-a.innerText = api.title; // set the text content of the p element
-
-// create an img element
-const img = document.createElement('img');
-img.src = api.thumbnail; // set the src attribute of the img element
-img.alt = 'news'; // set the alt attribute of the img element
-
-// append the p and img elements to the div element
-div.appendChild(a);
-div.appendChild(img);
-news_api.appendChild(div)
-  })
-}
-
-
-
-
-axios.get('/api/posts/subreddits/names').then(data=>{
-  others.innerHTML =''
-  data.data.forEach(sub=>{
-    const liElement = document.createElement('li');
-    const aElement = document.createElement('a');
-    const iElement = document.createElement('i');
-    
-    liElement.appendChild(aElement);
-    aElement.appendChild(iElement);
-    
-    iElement.classList.add('fa-solid', 'fa-reply-all');
-    aElement.textContent = sub.subreddittitle;
-    aElement.setAttribute('href', `/api/users/subreddits/${aElement.textContent}`);
-// aElement.addEventListener('click',()=>{
-
-//   axios.get(`/api/users/subreddits/${aElement.textContent}`).then(response=>{
-//     console.log(response);
-    
-//   })
-// })
-    others.appendChild(liElement)
-  })
-
-  
- 
-})
-
-
-
-
-
-const subredditsForm = document.querySelector('.subredditsForm')
-CreateSubreddit.addEventListener('click',()=>{
-  subredditsForm.style.display = 'flex'
-
-  subredditsForm.addEventListener('submit',(e)=>{
-    e.preventDefault()
-    const obj = new FormData(subredditsForm);
-    const data = Object.fromEntries(obj)
-    axios.post('/api/posts/subreddit',data).then(response=>{
-      console.log(response);
-    })
-
-    subredditsForm.style.display = 'none'
-
-  })
-
-  
-})
 
