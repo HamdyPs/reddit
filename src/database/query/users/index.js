@@ -61,6 +61,18 @@ const updatePasswordQuery = ( newPassword , userId) => {
   return connection.query(sql)
 }
 
+const addFriendQuery = (userId,friendId)=>{
+  let addFriendQuery = 'insert into friends (user_id,friend_id) values ($1,$2)'
+
+  const sql ={
+    text:addFriendQuery,
+    values:[userId,friendId]
+  }
+
+  return connection.query(sql)
+
+}
 
 
-module.exports = { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery,updatePasswordQuery };
+
+module.exports = { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery,updatePasswordQuery,addFriendQuery };

@@ -1,5 +1,5 @@
 const customError = require('../../helper/customError')
-const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery, updatePasswordQuery } = require('../../database/query/users')
+const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery, updatePasswordQuery, addFriendQuery } = require('../../database/query/users')
 const { join } = require('path')
 // const customError = require('../../helper/customError')
 const { signUpSchema, signinSchema } = require('../../schema/users.schema')
@@ -100,25 +100,32 @@ const updateUserData = (req, res) => {
     .then(data => res.status(200).json('your data has been updated succssuflly brother'))
 }
 const updatePasswordUser = (req, res) => {
-  const { password,newPassword } = req.body;
+  const { password, newPassword } = req.body;
   const { user } = req;
-  getUserQuery(user.providerID).then(data=>{
- bcrypt.compare(password,data.rows[0].password).then(isValidated=>{
-  if(isValidated){
-    hashed(newPassword,(err,result)=>{
-      if(err){
-        return
+  getUserQuery(user.providerID).then(data => {
+    bcrypt.compare(password, data.rows[0].password).then(isValidated => {
+      if (isValidated) {
+        hashed(newPassword, (err, result) => {
+          if (err) {
+            return
+          }
+          updatePasswordQuery(result, user.providerID).then(response => {
+            res.status(200).json('your password has been updated successfully')
+          })
+        })
       }
-      updatePasswordQuery(result,user.providerID).then(response=>{
-        res.status(200).json('your password has been updated successfully')
-      })
     })
-  }
- })
-    
+
   })
-  
+
+}
+
+const addFriend = (req, res) => {
+  const friendId = req.params.friendId
+  const { user } = req
+
+  addFriendQuery(user.providerID, friendId).then(response => res.status(200).json('you have been added this user successfully'))
 }
 
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage,getProfilesPage, getUserData, getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage }
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getProfilesPage, getUserData, getSettingPage, updateUserData, updatePasswordUser, getSubredditsPage, addFriend }
