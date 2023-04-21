@@ -9,7 +9,9 @@ const signUpSchema = Joi.object({
   country: Joi.string().required(),
   role: Joi.string().required(),
   phone: Joi.number().required(),
-  address: Joi.string().required()
+  address: Joi.string().required(),
+  question: Joi.string().required(),
+  answer: Joi.string().required()
 })
 const signinSchema = Joi.object({
   username: Joi.string().min(3).max(20).required(),

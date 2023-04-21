@@ -1,5 +1,5 @@
 const customError = require('../../helper/customError')
-const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery, updatePasswordQuery, addFriendQuery } = require('../../database/query/users')
+const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery, updatePasswordQuery, addFriendQuery,getUserDataQuery,forgotPasswordQuery } = require('../../database/query/users')
 const { join } = require('path')
 // const customError = require('../../helper/customError')
 const { signUpSchema, signinSchema } = require('../../schema/users.schema')
@@ -9,9 +9,9 @@ const hashed = (password, callback) => {
   bcrypt.hash(password, 10, callback)
 }
 const signUp = (req, res) => {
-  const { username, email, password, photo, date, country, phone, address } = req.body;
+  const { username, email, password, photo, date, country, phone, address,question,answer } = req.body;
   const role = 'user'
-  const { error, value } = signUpSchema.validateAsync({ username, email, password, photo, date, country, role, phone, address }, { abortEarly: false })
+  const { error, value } = signUpSchema.validateAsync({ username, email, password, photo, date, country, role, phone, address,question,answer }, { abortEarly: false })
   if (error) {
     return res.status(200).json({
       error: true,
@@ -23,7 +23,7 @@ const signUp = (req, res) => {
   }
 
   hashed(password, (err, result) => {
-    signUpUserQuery({ username, email, password: result, photo, date, country, role, phone, address })
+    signUpUserQuery({ username, email, password: result, photo, date, country, role, phone, address,question,answer })
       .then(() => res.status(201).json({
         error: false,
         data: {
@@ -127,5 +127,20 @@ const addFriend = (req, res) => {
   addFriendQuery(user.providerID, friendId).then(response => res.status(200).json('you have been added this user successfully'))
 }
 
+const forgotPassword = (req,res)=>{
+  const {email,question,answer,newPassword} = req.body
+  getUserDataQuery(email).then(userData=>{
+    if(userData.rows[0].email === email){
+      if(userData.rows[0].answer === answer && userData.rows[0].question === question){
+        hashed(newPassword,(err, result)=>{
+          forgotPasswordQuery(result,email).then(response=> res.status(200).json('your password has been updated succesfuly'))
+        })
+       }else{
+       return res.status(400).json('your answer is wrong')
+       }
+    }
+  }).catch(err => res.status(400).json('please write your email'))
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getProfilesPage, getUserData, getSettingPage, updateUserData, updatePasswordUser, getSubredditsPage, addFriend }
+}
+
+module.exports = { signUp, signin, getSignUpPage, getProfilePage, getProfilesPage, getUserData, getSettingPage, updateUserData, updatePasswordUser, getSubredditsPage, addFriend,forgotPassword }

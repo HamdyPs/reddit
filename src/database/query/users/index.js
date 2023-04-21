@@ -2,12 +2,12 @@ const connection = require('../../config');
 
 
 const signUpUserQuery = (userData) => {
-  const { username, email, password, photo, date, country, role, phone, address } = userData;
+  const { username, email, password, photo, date, country, role, phone, address,question,answer } = userData;
 
   const sql = {
-    text: `INSERT INTO users (username, email ,password ,photo, date, country, role, phone,address)
-     VALUES ($1 , $2, $3, $4, $5, $6, $7, $8, $9)`,
-    values: [username, email, password, photo, date, country, role, phone, address]
+    text: `INSERT INTO users (username, email ,password ,photo, date, country, role, phone,address,question,answer)
+     VALUES ($1 , $2, $3, $4, $5, $6, $7, $8, $9,$10,$11)`,
+    values: [username, email, password, photo, date, country, role, phone, address,question,answer]
   }
 
   return connection.query(sql)
@@ -24,13 +24,38 @@ const signInUserQuery = (userData) => {
 };
 const getUserQuery = (userId) => {
 
+  let userDataQuery = `SELECT id,username, email,password, photo, date, country, phone, address FROM users`
+  if(userId){
+    userDataQuery += ` where users.id = $1`
+  }
+
   const sql = {
-    text: `SELECT id,username, email,password, photo, date, country, phone, address FROM users where users.id = $1`,
-    values: [userId]
+    text: userDataQuery,
+    values: userId ? [userId] : []
   }
 
   return connection.query(sql)
 };
+const getUserDataQuery = (email) => {
+
+  let userDataQuery = `SELECT id,username, email,password, photo, date, country, phone, address,question,answer FROM users WHERE users.email = $1`
+
+  const sql = {
+    text: userDataQuery,
+    values: [email]
+  }
+
+  return connection.query(sql)
+};
+
+const forgotPasswordQuery = (newPassword,email)=>{
+  const sql = {
+    text: `update users set password = $1 where users.email = $2`,
+    values: [newPassword,email]
+  }
+
+  return connection.query(sql)
+}
 
 const updateUserQuery = ({ username, email, photo, date, country, phone, address }, userId) => {
 
@@ -75,4 +100,4 @@ const addFriendQuery = (userId,friendId)=>{
 
 
 
-module.exports = { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery,updatePasswordQuery,addFriendQuery };
+module.exports = { signUpUserQuery, signInUserQuery, getUserQuery,getUserDataQuery, updateUserQuery,updatePasswordQuery,addFriendQuery,forgotPasswordQuery };
