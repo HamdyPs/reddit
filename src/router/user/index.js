@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const { signUp, signin, getSignUpPage,getProfilePage, getUserData,getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage,getProfilesPage,addFriend} = require('../../controller/users')
+const { signUp, signin, getSignUpPage,getProfilePage, getUserData,getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage,getProfilesPage,addFriend,forgotPassword} = require('../../controller/users')
 const auth = require('../../helper/auth');
 
 userRouter.post('/signup', signUp);
@@ -13,7 +13,7 @@ userRouter.put('/update',auth, updateUserData)
 userRouter.put('/resetPassword',auth, updatePasswordUser)
 userRouter.get('/subreddits/:subrditTitle', getSubredditsPage)
 userRouter.get('/user/:friendId',auth, addFriend)
-
+userRouter.post('/forgotPassword',forgotPassword)
 
 
 module.exports = userRouter
