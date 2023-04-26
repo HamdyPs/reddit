@@ -124,7 +124,7 @@ const getPostByCountryQuery = ({ page, country }) => {
   const limit = 10;
   const offset = page * limit - limit;
 
-  const sqlQuery = `
+  let sqlQuery = `
   SELECT 
       p.id, 
       u.username, 
@@ -143,7 +143,22 @@ const getPostByCountryQuery = ({ page, country }) => {
       JOIN users u ON u.id = p.user_id
       LEFT JOIN votes v ON v.post_id = p.id
       LEFT JOIN comments c ON c.post_id = p.id
-  WHERE
+    `;
+
+    if(country === 'All'){
+      sqlQuery+=`
+GROUP BY 
+p.id, 
+u.username, 
+u.email, 
+p.title, 
+p.body, 
+p.image, 
+p.subreddit_id, 
+p.user_id
+ORDER BY id DESC LIMIT $1 OFFSET $2`
+    }else{
+      sqlQuery+=` WHERE
       u.country = $1
   GROUP BY 
       p.id, 
@@ -154,12 +169,12 @@ const getPostByCountryQuery = ({ page, country }) => {
       p.image, 
       p.subreddit_id, 
       p.user_id
-      ORDER BY id DESC LIMIT $2 OFFSET $3
-    `;
+      ORDER BY id DESC LIMIT $2 OFFSET $3`
+    }
 
   const sql = {
     text: sqlQuery,
-    values: [country, limit, offset],
+    values:  country === 'All' ? [limit, offset] :[country, limit, offset],
   };
   return connection.query(sql);
 };

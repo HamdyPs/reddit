@@ -77,7 +77,7 @@ const getPostById = (req, res, next) => {
     .catch((error) => next(error));
 };
 
-const getPostByCountry = (req, res) => {
+const getPostByCountry = (req, res,next) => {
   const { country } = req.params;
   const { page = 1 } = req.query;
 
@@ -88,7 +88,7 @@ const getPostByCountry = (req, res) => {
       post: data.rows,
     });
   })
-  .catch((error) => next(error));
+  .catch((error) => console.log(error));
 }
 
 const deletePost = (req, res,next)=>{
