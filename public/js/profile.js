@@ -100,43 +100,52 @@ if (!userData) {
 
 }
 
+const noti = document.querySelector('.noti')
+
+
 const getFriendRequests = () => {
   axios.get("/api/friend/requests").then((res) => {
     res.data.requests.forEach((frndReq) => {
-      const friendItem = document.createElement("li");
-      const friendName = document.createElement("span");
-      friendName.innerText = frndReq.username;
+      if(res.data.requests.length > 0){
+        const friendItem = document.createElement("li");
+        const friendName = document.createElement("span");
+        friendName.innerText = frndReq.username;
+  
+        const acceptBtn = document.createElement("button");
+        acceptBtn.innerText = "Accept";
+        acceptBtn.addEventListener("click", () => {
+          axios
+            .post(`/api/friend/response`, {
+              friendshipId: frndReq.id,
+              accept: true,
+            })
+            .then((res) => {
+            });
+        });
+  
+        const rejectBtn = document.createElement("button");
+        rejectBtn.innerText = "Reject";
+        rejectBtn.addEventListener("click", () => {
+          axios
+            .post(`/api/friend/response`, {
+              friendshipId: frndReq.id,
+              accept: false,
+            })
+            .then((res) => {
+              console.log(res.data);
+            });
+        });
+  
+        friendItem.appendChild(acceptBtn);
+        friendItem.appendChild(rejectBtn);
+        friendItem.appendChild(friendName);
+  
+        friendRequestList.appendChild(friendItem);
+        noti.style.display = 'block'
+      }else{
+        noti.style.display = 'none'
 
-      const acceptBtn = document.createElement("button");
-      acceptBtn.innerText = "Accept";
-      acceptBtn.addEventListener("click", () => {
-        axios
-          .post(`/api/friend/response`, {
-            friendshipId: frndReq.id,
-            accept: true,
-          })
-          .then((res) => {
-          });
-      });
-
-      const rejectBtn = document.createElement("button");
-      rejectBtn.innerText = "Reject";
-      rejectBtn.addEventListener("click", () => {
-        axios
-          .post(`/api/friend/response`, {
-            friendshipId: frndReq.id,
-            accept: false,
-          })
-          .then((res) => {
-            console.log(res.data);
-          });
-      });
-
-      friendItem.appendChild(acceptBtn);
-      friendItem.appendChild(rejectBtn);
-      friendItem.appendChild(friendName);
-
-      friendRequestList.appendChild(friendItem);
+      }
     });
   });
 };
@@ -151,7 +160,7 @@ const getFriends = () => {
     res.data.friends.forEach((friend) => {
       const friendItem = document.createElement("li");
       const friendName = document.createElement("span");
-      friendName.innerText = friend.username;
+      friendName.innerText = `username : ${friend.username}`;
       friendItem.appendChild(friendName);
       if(friendName.innerText === userData.username){
         return

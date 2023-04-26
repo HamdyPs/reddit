@@ -13,3 +13,39 @@
   font-size: 15px;
   color: #fff;
 }
+
+#friend-request-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+#friend-request-list >li {
+  border-bottom: 1px solid #999;
+}
+
+
+#friend-request-list >li> button{
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  margin-right: 10px;
+}
+
+#friend-request-list >li> button:first-child:hover{
+  color: rgb(20, 255, 20);
+}
+#friend-request-list >li> button:nth-child(2):hover{
+  color:red;
+}
+
+.noti{
+  padding: 7px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 20px;
+  display: none;
+}
