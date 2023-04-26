@@ -11,7 +11,6 @@ const upvoteDownVote = ({ vote, postId }) => {
     .then(({ data }) => {
       const countId = "card-post-count" + postId;
 
-      console.log(data);
       if (data.message.includes("created")) {
         votedPosts.push({
           postId,

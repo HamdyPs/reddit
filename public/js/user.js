@@ -9,7 +9,6 @@ const getPosts = () => {
   axios
     .get(`/api/post/user/${userId}?page=${currentPage}`)
     .then(({ data }) => {
-      console.log(data);
       data.posts.forEach((post) => {
         const postCard = renderPost(post);
         postsContainer.appendChild(postCard);
@@ -40,7 +39,6 @@ addFriendBtn.textContent = "Add Friend";
 addFriendBtn.classList.add('add-friend')
 addFriendBtn.addEventListener("click", () => {
   axios.post(`/api/friend/${userId}`).then((res) => {
-    console.log(res.data);
     
   });
 });

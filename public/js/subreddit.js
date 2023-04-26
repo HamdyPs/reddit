@@ -7,7 +7,6 @@ const getPosts = () => {
   axios
     .get(`/api/post/subreddit/${subredditId}?page=${currentPage}`)
     .then(({ data }) => {
-      console.log(data);
       data.posts.forEach((post) => {
         const postCard = renderPost(post);
         postsContainer.appendChild(postCard);

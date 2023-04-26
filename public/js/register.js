@@ -5,7 +5,7 @@ form.addEventListener("submit", (e) => {
 
   const data = new FormData(form);
 
-  console.log(data.get("password"), data.get("confirmPassword"));
+  
 
   if (data.get("password") !== data.get("confirm-password")) {
     return alert("Passwords do not match");

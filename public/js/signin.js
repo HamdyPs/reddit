@@ -13,7 +13,6 @@ form.addEventListener("submit", (e) => {
   };
 
   axios.post("/api/auth/signin", fd).then((res) => {
-    console.log(res.data);
     localStorage.setItem(
       "userData",
       JSON.stringify({
@@ -31,21 +30,13 @@ form.addEventListener("submit", (e) => {
 passwordDivBtn.addEventListener('click',(e)=>{
   e.preventDefault()
 	forgotPasswordForm.style.visibility = 'visible'
-	axios.get('/api/auth/questions').then(response=>{
-		console.log(response.data.data);
-		response.data.data.forEach(data=>{
-			const option = document.createElement('option');
-			option.textContent = data.question
-			questions.appendChild(option)
-		})
-	})
 	forgotPasswordForm.addEventListener('submit',(e)=>{
 		e.preventDefault()
 		const obj = new FormData(forgotPasswordForm)
 		const data = Object.fromEntries(obj)
 
 		axios.post('/api/auth/forgotPassword', data).then(response=>{
-			console.log(response);
+
 			forgotPasswordForm.style.visibility = 'hidden'
 
 		})

@@ -6,9 +6,7 @@ commentForm.addEventListener('submit',(e)=>{
   e.preventDefault();
   const obj = new FormData(commentForm);
   const data = Object.fromEntries(obj)
-  console.log(data.comment);
   axios.post(`/api/comment/${postId}`,{body:data.comment}).then(response=>{
-    console.log(response);
     getPostComments(postId)
   })
 
@@ -30,7 +28,6 @@ const getPosts = () => {
   axios
     .get(`/api/post/${postId}`)
     .then(({ data }) => {
-      console.log(data);
       const postCard = renderPost(data.post);
       postsContainer.appendChild(postCard);
 

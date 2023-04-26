@@ -21,7 +21,6 @@ if (!userData) {
     axios
       .get(`/api/post/user/${userData.id}?page=${currentPage}`)
       .then(({ data }) => {
-        console.log(data);
         data.posts.forEach((post) => {
           const postCard = renderPost(post);
           postsContainer.appendChild(postCard);
@@ -59,7 +58,6 @@ if (!userData) {
     e.preventDefault()
     const obj = new FormData(createPostForm);
     const data = Object.fromEntries(obj)
-    console.log(data);
     axios.post('/api/post/', data).then(({ data }) => {
       getPosts();
 

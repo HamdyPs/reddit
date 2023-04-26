@@ -41,9 +41,7 @@ loadMoreBtn.addEventListener("click", () => {
 });
 
 countrySelect.addEventListener('change', (e) => {
-  console.log(e.target.value);
   axios.get(`/api/post/country/${e.target.value}/?page=${currentPage}`).then(({data} )=> {
-    console.log(data);
     if(data.post.length >0){
 
       data.post.forEach((post) => {

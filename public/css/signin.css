@@ -43,6 +43,7 @@ h1 {
   line-height: 1.5;
   padding: 8px;
   width: 100%;
+  color: #fff;
 }
 
 #signin-form > input[type="submit"] {
@@ -70,8 +71,34 @@ h1 {
   background-color: #005eb8;
 }
 
-.forgotPasswordForm > input, .forgotPasswordForm > select{
-  margin-top: 20px;
+.forgotPasswordForm > input{
+  margin: 20px 0px;
+  color: #fff;
+  padding:  20px;
+  border: none;
+  border-radius: 10px;
+
+}
+
+.forgotPasswordForm button{
+  background-color: #ff4500;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  height: 40px;
+  line-height: 1.5;
+  margin-top: 24px;
+  padding: 0 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease-in-out;
+  width: 100%;
 }
 
 #signin-form > div{
@@ -98,4 +125,8 @@ h1 {
 .forgotPasswordForm {
   visibility: hidden;
  
+}
+
+.forgotPasswordForm h3{
+  color: #fff;
 }
