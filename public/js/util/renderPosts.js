@@ -145,8 +145,8 @@ const renderPost = ({
 
   const userLink = document.createElement("a");
   userLink.classList.add("post-card-content-user");
-  if(user_id === userDatas.id){
-    userLink.href = `/profile/${userDatas.id}`;
+  if(user_id === userDatas?.id){
+    userLink.href = `/profile/${userDatas?.id}`;
 
   }else{
     userLink.href = `/user/${user_id}`;
@@ -204,7 +204,7 @@ const renderPost = ({
   })
 
   postCardActions.appendChild(commentLink);
-  if(user_id === userDatas.id){
+  if(user_id === userDatas?.id){
     postCardActions.appendChild(deleteBtn);
 
   }
