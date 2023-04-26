@@ -59,6 +59,7 @@ if (!userData) {
     e.preventDefault()
     const obj = new FormData(createPostForm);
     const data = Object.fromEntries(obj)
+    console.log(data);
     axios.post('/api/post/', data).then(({ data }) => {
       getPosts();
 
@@ -76,7 +77,8 @@ if (!userData) {
     axios.get('/api/subreddit/').then(data => {
       data.data.subreddits.forEach(sub => {
         const optionElement = document.createElement('option');
-        optionElement.textContent = sub.id;
+        optionElement.textContent = sub.name;
+        optionElement.value = sub.id;
         selectElement.appendChild(optionElement);
       })
 

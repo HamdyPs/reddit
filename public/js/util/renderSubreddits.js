@@ -10,7 +10,7 @@ const renderSubreddits = () => {
       img.src = "../assets/logo.svg";
       a.appendChild(img);
       a.appendChild(document.createTextNode(sub.name));
-
+      
       li.appendChild(a);
       ul.appendChild(li);
     });
