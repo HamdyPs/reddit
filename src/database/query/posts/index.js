@@ -1,210 +1,269 @@
-const connection = require('../../config');
+const connection = require("../../config");
 
-
-const createPostQuery = (postData, user) => {
-
-  const { title, description, photo,subredditTitle } = postData;
-  const userId = user.providerID
+const createPostQuery = ({ title, body, userId, subredditId, image }) => {
   const sql = {
-    text: `INSERT INTO posts (title, description, photo, user_id,subredditTitle)
-     VALUES ($1 , $2, $3, $4,$5)`,
-    values: [title, description, photo, userId,subredditTitle]
-  }
-
-  return connection.query(sql)
-};
-
-
-
-const getPostsQuery = (userId) => {
-  let query = `select 
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-from posts p 
-join users u
-  on u.id = p.user_id`
-
-  if (userId) {
-    query += ` where u.id = $1`
-  }
-  const sql = {
-    text: query,
-    values: userId ? [userId] : []
+    text: `INSERT INTO posts (title, body, user_id, subreddit_id, image) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+    values: [title, body, userId, subredditId, image],
   };
   return connection.query(sql);
 };
 
+// const createDummyData = () => {
+//   const titles = ["one", "two", "three", "four", "give", "six", "seven"];
+//   const body = [
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.1",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.2",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.3",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.4",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.5",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.6",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.7",
+//   ];
 
-const getUsersPostsQuery = (userId) => {
-  let usersPostsquery = `select 
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-from posts p 
-join users u
-  on u.id = p.user_id where u.id = $1`
+//   const users = [1, 2, 3, 4, 5, 6, 7];
+//   const subreddits = [1, 2, 3, 4, 5, 6, 7];
+
+//   for (let i = 0; i < 7; i++) {
+//     createPostQuery({
+//       title: titles[i],
+//       body: body[i],
+//       userId: users[i],
+//       subredditId: subreddits[i],
+//       // image,
+//     });
+//   }
+// };
+
+// createDummyData();
+
+const getPostsQuery = ({ page }) => {
+  const limit = 10;
+  const offset = page * limit - limit;
+
+  const sqlQuery = `
+  SELECT 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id,
+      p.created_at,
+      COALESCE(SUM(CASE WHEN v.vote = TRUE THEN 1 ELSE 0 END), 0) AS upvotes,
+      COALESCE(SUM(CASE WHEN v.vote = FALSE THEN 1 ELSE 0 END), 0) AS downvotes,
+      COALESCE(COUNT(DISTINCT c.id), 0) AS comments_count
+  FROM 
+      posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN votes v ON v.post_id = p.id
+      LEFT JOIN comments c ON c.post_id = p.id
+  GROUP BY 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id
+      ORDER BY id DESC LIMIT $1 OFFSET $2
+  `;
   const sql = {
-    text: usersPostsquery,
-    values:  [userId] 
+    text: sqlQuery,
+    values: [limit, offset],
   };
   return connection.query(sql);
 };
 
+const getPostsBySubredditQuery = ({ page, subredditId }) => {
+  const limit = 10;
+  const offset = page * limit - limit;
 
-const getPostQuery = (postId) => {
-  let query = `select 
-  p.id,
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id
-from posts p 
-join users u
-  on u.id = p.user_id
-  where p.id = $1`
-
+  const sqlQuery = `
+  SELECT 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id,
+      p.created_at,
+      COALESCE(SUM(CASE WHEN v.vote = TRUE THEN 1 ELSE 0 END), 0) AS upvotes,
+      COALESCE(SUM(CASE WHEN v.vote = FALSE THEN 1 ELSE 0 END), 0) AS downvotes,
+      COALESCE(COUNT(DISTINCT c.id), 0) AS comments_count
+  FROM 
+      posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN votes v ON v.post_id = p.id
+      LEFT JOIN comments c ON c.post_id = p.id
+  WHERE
+      p.subreddit_id = $1
+  GROUP BY 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id
+      ORDER BY id DESC LIMIT $2 OFFSET $3
+    `;
 
   const sql = {
-    text: query,
-    values: [postId]
+    text: sqlQuery,
+    values: [subredditId, limit, offset],
   };
+  return connection.query(sql);
+};
+const getPostByCountryQuery = ({ page, country }) => {
+  const limit = 10;
+  const offset = page * limit - limit;
 
+  const sqlQuery = `
+  SELECT 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id,
+      p.created_at, 
+      COALESCE(SUM(CASE WHEN v.vote = TRUE THEN 1 ELSE 0 END), 0) AS upvotes,
+      COALESCE(SUM(CASE WHEN v.vote = FALSE THEN 1 ELSE 0 END), 0) AS downvotes,
+      COALESCE(COUNT(DISTINCT c.id), 0) AS comments_count
+  FROM 
+      posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN votes v ON v.post_id = p.id
+      LEFT JOIN comments c ON c.post_id = p.id
+  WHERE
+      u.country = $1
+  GROUP BY 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id
+      ORDER BY id DESC LIMIT $2 OFFSET $3
+    `;
 
+  const sql = {
+    text: sqlQuery,
+    values: [country, limit, offset],
+  };
   return connection.query(sql);
 };
 
-const commentQuery = (postId) => {
-  let commentsQuery = `select
-  c.content,
-  c.user_id,
-  u.username,
-  u.photo
-  from comments c
-  join users u
-  on c.user_id = u.id
-  where c.post_id = $1`
-  const commentSql = {
-    text: commentsQuery,
-    values: [postId]
-  }
-  return connection.query(commentSql)
-}
+const getPostsByUserQuery = ({ page, userId }) => {
+  const limit = 10;
+  const offset = page * limit - limit;
 
-const countryPostsQuery = (country)=>{
-  let countryquery = `select 
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-from posts p 
-join users u
-  on u.id = p.user_id
-  where u.country = $1`
+  const sqlQuery = `
+  SELECT 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id,
+      p.created_at, 
+      COALESCE(SUM(CASE WHEN v.vote = TRUE THEN 1 ELSE 0 END), 0) AS upvotes,
+      COALESCE(SUM(CASE WHEN v.vote = FALSE THEN 1 ELSE 0 END), 0) AS downvotes,
+      COALESCE(COUNT(DISTINCT c.id), 0) AS comments_count
+  FROM 
+      posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN votes v ON v.post_id = p.id
+      LEFT JOIN comments c ON c.post_id = p.id
+  WHERE
+      p.user_id = $1
+  GROUP BY 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id
+      ORDER BY id DESC LIMIT $2 OFFSET $3
+    `;
+
   const sql = {
-    text: countryquery,
-    values: [country]
+    text: sqlQuery,
+    values: [userId, limit, offset],
   };
+  return connection.query(sql);
+};
 
-  return connection.query(sql)
+const getPostByIdQuery = ({ postId }) => {
+  const sqlQuery = `
+  SELECT 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id,
+      p.created_at, 
+      COALESCE(SUM(CASE WHEN v.vote = TRUE THEN 1 ELSE 0 END), 0) AS upvotes,
+      COALESCE(SUM(CASE WHEN v.vote = FALSE THEN 1 ELSE 0 END), 0) AS downvotes,
+      COALESCE(COUNT(DISTINCT c.id), 0) AS comments_count
+  FROM 
+      posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN votes v ON v.post_id = p.id
+      LEFT JOIN comments c ON c.post_id = p.id
+  WHERE
+      p.id = $1
+  GROUP BY 
+      p.id, 
+      u.username, 
+      u.email, 
+      p.title, 
+      p.body, 
+      p.image, 
+      p.subreddit_id, 
+      p.user_id
+`;
 
-}
-const namePostsQuery = (postName)=>{
-  let namequery = `select 
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-from posts p 
-join users u
-  on u.id = p.user_id
-  where p.title = $1`
   const sql = {
-    text: namequery,
-    values: [postName]
+    text: sqlQuery,
+    values: [postId],
   };
-
-  return connection.query(sql)
-
-}
+  return connection.query(sql);
+};
 
 const deletePostQuery = (postId) => {
-  const sql = {
-    text: `DELETE FROM posts where posts.id = $1`,
-    values: [postId]
-  }
-  return connection.query(sql);
-
-}
-
-const createSubredditQuery = (subredditTitle,userId)=>{
-  const subredditQuery = `insert into subreddits (subredditTitle,user_id) values ($1,$2)`
+  const sqlQuery = `delete from posts where posts.id = $1`;
 
   const sql = {
-    text: subredditQuery,
-    values: [subredditTitle,userId]
-  }
-  return connection.query(sql);
-
-}
-
-const getSubredditNamesQuery = ()=>{
-  let subredditNamequery = `select * from subreddits`
-
-  const sql = {
-    text: subredditNamequery
+    text: sqlQuery,
+    values: [postId],
   };
-
-
   return connection.query(sql);
-}
-const getSubredditPostsQuery = (subredditTitle)=>{
-  let subredditPostsquery = `select
-  p.title,
-  p.description,
-  p.photo,
-  u.photo,
-  u.username,
-  p.created_at,
-  p.user_id,
-  p.id
-  from posts p
-  join users u
-  on p.user_id = u.id
-  join subreddits s 
-  on p.subredditTitle = s.subredditTitle
-  where p.subredditTitle = $1 
-  `
+};
 
-  const sql = {
-    text: subredditPostsquery,
-    values:[subredditTitle]
-  };
-
-
-  return connection.query(sql);
-}
-
-
-module.exports = { createPostQuery, getPostsQuery: getPostsQuery,getUsersPostsQuery, deletePostQuery, getPostQuery, commentQuery,countryPostsQuery,namePostsQuery,createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery }
+module.exports = {
+  createPostQuery,
+  getPostsQuery,
+  getPostsBySubredditQuery,
+  getPostsByUserQuery,
+  getPostByIdQuery,
+  getPostByCountryQuery,
+  deletePostQuery,
+};

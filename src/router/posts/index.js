@@ -1,19 +1,22 @@
-const postsRouter = require('express').Router();
-const { createPost, getUserPosts,getUsersPosts, getPosts, deletePost, getPost,countryPosts,namePosts,getSubredditNames,createSubreddit,getSubredditPosts } = require('../../controller/posts');
-const auth = require('../../helper/auth');
+const router = require("express").Router();
+const {
+  createPost,
+  getPosts,
+  getPostsBySubreddit,
+  getPostsByUser,
+  getPostById,
+  getPostByCountry,
+  deletePost,
+} = require("../../controller/posts");
+const { auth } = require("../../helper/auth");
 
-postsRouter.post('/', auth, createPost);
-postsRouter.delete('/:postId', auth, deletePost);
-postsRouter.get('/user', auth, getUserPosts);
-postsRouter.get('/user/:userId', auth, getUsersPosts);
-postsRouter.get('/:postId', auth, getPost);
-postsRouter.get('/', getPosts);
-// postsRouter.get('/subreddits', createSubreddit);
-postsRouter.get('/postCountry/:country',auth, countryPosts);
-postsRouter.get('/postname/:postname',auth, namePosts);
-postsRouter.get('/subreddits/names', getSubredditNames);
-postsRouter.post('/subreddit',auth, createSubreddit);
-postsRouter.get('/rooms/:subreditTitle',getSubredditPosts)
+router.get("/subreddit/:subredditId", getPostsBySubreddit);
+router.get("/country/:country", getPostByCountry);
+router.get("/user/:userId", getPostsByUser);
 
+router.post("/", auth, createPost);
+router.get("/", getPosts);
+router.get("/:postId", getPostById);
+router.delete("/:postId",auth, deletePost);
 
-module.exports = postsRouter;
+module.exports = router;

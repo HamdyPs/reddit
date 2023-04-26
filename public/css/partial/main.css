@@ -1,0 +1,20 @@
+
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  min-height: 100vh;
+  background: #030303;
+  padding-top: 3rem;
+  overflow: hidden;
+}
+
+main > #main-subreddit-list {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  height: 100%;
+  background-color: #1a1a1b;
+
+}
+/* main > #main-posts-feed {
+  height: 100%;
+} */

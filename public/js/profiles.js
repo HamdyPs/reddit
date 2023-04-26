@@ -2,21 +2,31 @@
 const allUserPosts = document.querySelector('.allUserPosts')
 const userNameProfile = document.querySelector('.userNameProfile')
 const userNameAcoount = document.querySelector('.userNameAcoount')
-const userId = window.location.href.split('http://localhost:4000/api/users/profiles/')[1]
+const profileuser = document.querySelector('.profileuser')
+const addFriendEvent = document.querySelector('.addFriendEvent')
+const userId = window.location.pathname.split("/").pop();
 console.log(userId);
-axios.get(`/api/posts/user/${userId}`).then(response => {
-  renderPost(response.data)
+const accessToken = document.cookie.split('=').pop()
+
+axios.get(`/api/post/user/${userId}`).then(response => {
+  renderPost(response.data.posts)
 })
 
-// axios.get('/api/users/sitting').then(response=>{
-//   console.log(response.data);
-//   userNameAcoount.textContent = response.data[0].username;
-//   userNameProfile.textContent = response.data[0].username;
+if (accessToken) {
 
-// })
+  axios.get('/api/auth/userdata').then(response => {
+    userNameAcoount.textContent = response.data.data.username;
+    userNameProfile.textContent = response.data.data.username;
+  })
+
+}
+
+profileuser.addEventListener('click', () => {
+  profileuser.href = `/profile/${JSON.parse(userData.id)}`
+})
 
 const renderPost = (posts) => {
-  console.log(posts);
+  allUserPosts.innerHTML = ''
   posts.forEach(post => {
     const blogPost = document.createElement('div');
     blogPost.classList.add('blog_post');
@@ -89,8 +99,9 @@ const renderPost = (posts) => {
 
     const votesCount = document.createElement('p');
     votesCount.classList.add('vote-count')
+    votesCount.textContent = +post.upvotes - +post.downvotes
+
     votes.appendChild(votesCount);
-    showVote(post.id, votesCount)
 
     const rightArrowBtn = document.createElement('button');
     votes.appendChild(rightArrowBtn);
@@ -113,32 +124,28 @@ const renderPost = (posts) => {
     commentsCount.classList.add('comments-nums');
     commentsCount.textContent = '20';
 
-    // const deleteBtn = document.createElement('button');
-    // deleteBtn.classList.add('deletePost');
-    // deleteBtn.textContent = 'delete';
-
-    // deleteBtn.addEventListener('click',()=>{
-    //   axios.delete(`/api/posts/${post.id}`).then(response=>{
-    //     console.log(response.data.message);
-    //     axios.get(`/api/posts/user`).then(response => {
-    //       renderPost(response.data)
-    //     })
-    //     location.reload()
-    //   })
-    // })
-    // inputsPost.appendChild(deleteBtn)
     rightArrowBtn.addEventListener('click', () => {
-      axios.get(`/api/comments/user/${post.id}`).then(response => {
-        // console.log(response);
+      const data = {
+        vote: true,
+        postId: post.id,
+      }
+      axios.post(`/api/vote/`, data).then(response => {
+        axios.get(`/api/post/user/${userId}`).then(response => {
+          renderPost(response.data.posts)
+        })
       })
-      axios.get(`/api/comments/${post.id}`).then(response => {
-        showVote(post.id, votesCount)
-      })
+
     })
 
     leftArrowBtn.addEventListener('click', () => {
-      axios.delete(`/api/comments/${post.id}`).then(response => {
-        showVote(post.id, votesCount)
+      const data = {
+        vote: false,
+        postId: post.id,
+      }
+      axios.post(`/api/vote/`, data).then(response => {
+        axios.get(`/api/post/user/${userId}`).then(response => {
+          renderPost(response.data.posts)
+        })
       })
     })
 
@@ -151,25 +158,13 @@ const renderPost = (posts) => {
 
     commentsBtn.addEventListener('click', () => {
 
-      axios.get(`/api/comments/post/${post.id}`).then(response => {
-        showComments(response.data, commentsDiv, post.id)
+      axios.get(`/api/comment/${post.id}`).then(response => {
+        showComments(response.data.comments, commentsDiv, post.id)
       })
     })
 
 
   });
-}
-
-const showVote = (post, votesCount) => {
-  axios.get(`/api/comments/${post}`).then(response => {
-    if (response.data.voteCount > 0) {
-      votesCount.textContent = response.data.voteCount;
-
-    } else {
-      votesCount.textContent = '0'
-
-    }
-  })
 }
 
 const showComments = (data, commentsDiv, postId) => {
@@ -205,7 +200,7 @@ const showComments = (data, commentsDiv, postId) => {
 
     const userContent = document.createElement("p");
     userContent.classList.add("comment-user-content");
-    userContent.textContent = comment.content;
+    userContent.textContent = comment.body;
 
     commentContentDiv.appendChild(userContent);
 
@@ -244,13 +239,14 @@ const showComments = (data, commentsDiv, postId) => {
 
     const data = inputComment.value
     console.log(data);
-    axios.post(`/api/comments/${postId}`, { content: data }).then(response => {
+    axios.post(`/api/comment/${postId}`, { body: data }).then(response => {
       console.log(response);
     })
 
 
-    axios.get(`/api/comments/post/${postId}`).then(response => {
-      showComments(response.data, commentsDiv, postId)
+    axios.get(`/api/comment/${postId}`).then(response => {
+      console.log(response.data);
+      showComments(response.data.comments, commentsDiv, postId)
     })
 
   })
@@ -261,4 +257,10 @@ const showComments = (data, commentsDiv, postId) => {
 
 }
 
+
+addFriendEvent.addEventListener('click', () => {
+  axios.post(`/api/friend/${userId}`).then(response => {
+    console.log(response);
+  })
+})
 

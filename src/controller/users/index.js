@@ -1,146 +1,138 @@
-const customError = require('../../helper/customError')
-const { signUpUserQuery, signInUserQuery, getUserQuery, updateUserQuery, updatePasswordQuery, addFriendQuery,getUserDataQuery,forgotPasswordQuery } = require('../../database/query/users')
-const { join } = require('path')
-// const customError = require('../../helper/customError')
-const { signUpSchema, signinSchema } = require('../../schema/users.schema')
-const bcrypt = require('bcryptjs')
-const signToken = require('../../helper/jwt')
-const hashed = (password, callback) => {
-  bcrypt.hash(password, 10, callback)
-}
-const signUp = (req, res) => {
-  const { username, email, password, photo, date, country, phone, address,question,answer } = req.body;
-  const role = 'user'
-  const { error, value } = signUpSchema.validateAsync({ username, email, password, photo, date, country, role, phone, address,question,answer }, { abortEarly: false })
-  if (error) {
-    return res.status(200).json({
-      error: true,
-      data: {
-        errors: error.details
-      }
-    });
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { signupQuery } = require("../../database/query/auth");
+const { getUserByUsernameQuery, getUserByIdQuery, forgotPasswordQuery, getUserByEmailQuery, updateUserQuery, updatePasswordQuery, getUserQuestionsQuery } = require("../../database/query/users");
 
-  }
+const signup = (req, res, next) => {
+  const { username, email, password, photo, country, question, answer } = req.body;
 
-  hashed(password, (err, result) => {
-    signUpUserQuery({ username, email, password: result, photo, date, country, role, phone, address,question,answer })
-      .then(() => res.status(201).json({
-        error: false,
-        data: {
-          data: 'your account has been created succssfully, now u can logIn'
-        }
-      }))
-      .catch((error) => {
-        console.log(error);
-        // next(error)
-      })
-  })
+  const hashPassword = bcrypt.hashSync(password, 10);
 
-}
+  const user = {
+    username,
+    email,
+    password: hashPassword,
+    photo,
+    country,
+    question,
+    answer,
+  };
 
-const signin = (req, res) => {
-  const { username, password } = req.body;
-
-  signinSchema.validateAsync({ username, password }, { abortEarly: false })
-    .then((data) => signInUserQuery(data))
-    .then(({ rows }) => {
-      if (rows.length) {
-        req.userId = rows[0].id
-        return bcrypt.compare(password, rows[0].password)
-      } else {
-        throw customError(401, { msg: 'your password or username wrong' })
-      }
-    })
-    .then((isMatched) => {
-      if (!isMatched) {
-        throw customError(401, { msg: 'your password or username wrong' })
-      } else {
-        return signToken(username, req.userId)
-      }
-    }).then((token) => {
-      return res.status(200).cookie("token", token).json({
-        message: token
-      })
+  signupQuery(user)
+    .then((data) => {
+      return res.status(201).json({
+        message: "User created successfully",
+        user: data.rows[0],
+      });
     })
     .catch((error) => {
-      console.log(error, 'adfadfadf');
-      res.json({
-        status: error.status,
-        massage: error.massage
-      })
+      next(error);
+    });
+};
+
+const signin = (req, res, next) => {
+  const { username, password } = req.body;
+
+  getUserByUsernameQuery({ username })
+    .then((data) => {
+      const user = data.rows[0];
+      const isMatching = bcrypt.compareSync(password, user.password);
+
+      if (isMatching) {
+        const accessToken = jwt.sign(user.id, process.env.JWT_SECRET);
+
+        return res.status(200).cookie("accessToken", accessToken).json({
+          message: "User logged in successfully",
+          user,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Invalid username or password",
+        });
+      }
     })
+    .catch((error) => {
+      next(error);
+    });
+};
+
+const logOut = (req, res)=>{
+  res.clearCookie("accessToken").json('you have logged out successfully')
 }
 
-const getSignUpPage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/resgister.html'))
-}
-const getProfilePage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/profile.html'))
-}
-const getSettingPage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/sitting.html'))
-}
-const getSubredditsPage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/subreddits.html'))
-}
-const getProfilesPage = (req, res) => {
-  res.sendFile(join(__dirname, '../../../public/components/client/profiles.html'))
+const getUserData = (req, res, next) => {
+  const { id } = req.user;
+  console.log(req.user);
+  getUserByIdQuery({ userId: id }).then((data) => {
+    res.status(200).json({
+      message: 'this is your data',
+      data: data.rows[0]
+    });
+  })
+    .catch((error) => next(error));
 }
 
-const getUserData = (req, res) => {
-  const { user } = req;
-
-  getUserQuery(user.providerID).then(data => res.status(200).json(data.rows))
-}
-
-const updateUserData = (req, res) => {
-  const { username, email, photo, date, country, phone, address } = req.body;
-  const { user } = req;
-  updateUserQuery({ username, email, photo, date, country, phone, address }, user.providerID)
+const updateUserData = (req, res, next) => {
+  const { username, email, photo, country } = req.body;
+  const { id } = req.user;
+  console.log(id);
+  updateUserQuery({ username, email, photo, country }, { userId: id })
     .then(data => res.status(200).json('your data has been updated succssuflly brother'))
+    .catch(error => next(error))
 }
-const updatePasswordUser = (req, res) => {
+
+const updatePasswordUser = (req, res, next) => {
   const { password, newPassword } = req.body;
-  const { user } = req;
-  getUserQuery(user.providerID).then(data => {
+  const { id } = req.user;
+
+
+  getUserByIdQuery({ userId: id }).then(data => {
     bcrypt.compare(password, data.rows[0].password).then(isValidated => {
+
       if (isValidated) {
-        hashed(newPassword, (err, result) => {
-          if (err) {
-            return
-          }
-          updatePasswordQuery(result, user.providerID).then(response => {
-            res.status(200).json('your password has been updated successfully')
-          })
+        const hashPassword = bcrypt.hashSync(newPassword, 10);
+        updatePasswordQuery(hashPassword, { userId: id }).then(response => {
+          res.status(200).json('your password has been updated successfully')
         })
+
       }
     })
 
   })
+    .catch(error => next(error))
 
 }
 
-const addFriend = (req, res) => {
-  const friendId = req.params.friendId
-  const { user } = req
+const forgotPassword = (req, res, next) => {
+  const { email, question, answer, newPassword } = req.body
+  getUserByEmailQuery(email).then(userData => {
 
-  addFriendQuery(user.providerID, friendId).then(response => res.status(200).json('you have been added this user successfully'))
-}
+    if (userData.rows[0].email === email) {
+      if (userData.rows[0].answer === answer && userData.rows[0].question === question) {
 
-const forgotPassword = (req,res)=>{
-  const {email,question,answer,newPassword} = req.body
-  getUserDataQuery(email).then(userData=>{
-    if(userData.rows[0].email === email){
-      if(userData.rows[0].answer === answer && userData.rows[0].question === question){
-        hashed(newPassword,(err, result)=>{
-          forgotPasswordQuery(result,email).then(response=> res.status(200).json('your password has been updated succesfuly'))
-        })
-       }else{
-       return res.status(400).json('your answer is wrong')
-       }
+        const hashPassword = bcrypt.hashSync(newPassword, 10);
+        forgotPasswordQuery(hashPassword, email).then(response => res.status(200).json('your password has been updated succesfuly'))
+      } else {
+        return res.status(400).json('your answer is wrong')
+      }
     }
-  }).catch(err => res.status(400).json('please write your email'))
+  }).catch(err => next(err))
 
 }
 
-module.exports = { signUp, signin, getSignUpPage, getProfilePage, getProfilesPage, getUserData, getSettingPage, updateUserData, updatePasswordUser, getSubredditsPage, addFriend,forgotPassword }
+const getUserQuestions = (req, res) => {
+  getUserQuestionsQuery().then(data => res.status(200).json({
+    message: 'data recieved successfully',
+    data: data.rows
+  }))
+}
+module.exports = {
+  signup,
+  signin,
+  logOut,
+  getUserData,
+  updateUserData,
+  updatePasswordUser,
+  forgotPassword,
+  getUserQuestions,
+};

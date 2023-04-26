@@ -22,11 +22,10 @@
         <input name="username" type="text" placeholder="username" />
         <input name="email" type="email" placeholder="email" />
         <input name="password" type="password" placeholder="password" />
-        <input name="photo" type="photo" placeholder="ur_photo" />
-        <input name="date" type="text" placeholder="date" />
-        <input name="country" type="country" placeholder="country" />
-        <input name="phone" type="number" placeholder="phone-number" />
-        <input name="address" type="text" placeholder="address" />
+        <input name="photo" type="text" placeholder="ur_photo" />
+        <input name="country" type="text" placeholder="country" />
+        <input name="question" type="text" placeholder="question" />
+        <input name="answer" type="text" placeholder="answer" />
         <button>Sign Up</button>
       </form type="submit">
     </div>
@@ -41,7 +40,7 @@
         <span>or use your account</span>
         <input name="username" type="text" placeholder="username" />
         <input name="password" type="password" placeholder="Password" />
-        <a href="#">Forgot your password?</a>
+        <a class="passwordDivBtn" href="#">Forgot your password?</a>
         <button type="submit">Sign In</button>
  
       </form>
@@ -66,6 +65,17 @@
   <div class="wholetoast">
 
   </div>
+
+  <form class="forgotPasswordForm">
+    <h3>please fill all requiered information to change your password</h3>
+    <input type="email" name="email" placeholder="write your email">
+    <select class="questions" name="question">
+
+    </select>
+    <input type="text" name="answer" placeholder="write your answer">
+    <input type="text" name="newPassword" placeholder="write your new password">
+    <button type="submit">confirm</button>
+  </form>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>

@@ -1,0 +1,122 @@
+.post-card-content-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.post-card-content-actions{
+  margin-top: 20px;
+}
+
+.post-card-content-actions-comment {
+  text-decoration: none;
+  color: rgb(163, 163, 163);
+  font-size: 15px;
+}
+
+.post-card {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1rem;
+  background-color: rgb(20, 20, 20);
+  padding: 1rem 0.5rem;
+  border-radius: 5px;
+}
+
+.post-card-vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.active {
+  color: rgb(233, 98, 20);
+}
+
+.post-card-vote > * {
+  margin: 0.5rem 0;
+}
+
+.post-card-vote > span {
+  font-size: 15px;
+  font-weight: bold;
+  color: rgb(197, 197, 197);
+}
+
+.post-card-vote > button {
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  background: none;
+  border: none;
+}
+
+.post-card-content {
+  width: 100%;
+}
+
+.post-card-content-header {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.post-card-content-header > * {
+  margin-right: 0.5rem;
+}
+
+.post-card-content-subreddit {
+  color: rgb(187, 187, 187);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.post-card-content-user {
+  color: rgb(141, 141, 141);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.post-card-content-preview {
+  width: 100%;
+}
+
+.post-card-content-preview > a {
+  text-decoration: none;
+}
+
+.post-card-content-preview > a > h2 {
+  color: rgb(187, 187, 187);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.post-card-content-preview > p {
+  color: rgb(187, 187, 187);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.post-card-content-preview-image {
+  height: 370px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.post-card-content-preview-image > img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
+.deletePost{
+  border: none;
+  margin-left: 30px;
+  background: transparent;
+  color: #dd7575;
+}

@@ -1,4 +1,5 @@
-
+const userData = JSON.parse(localStorage.getItem("userData"));
+const userSettings = document.querySelector('.userSettings');
 const username = document.querySelector('.username');
 const email = document.querySelector('.email');
 const photo = document.querySelector('.photo');
@@ -10,64 +11,59 @@ const changePasswordForm = document.querySelector('.changePasswordForm');
 const uncheckedIcon = document.querySelectorAll('.fa-user-pen');
 const checkedIcon = document.querySelectorAll('.fa-user-check');
 const userNameAcoount = document.querySelector('.userNameAcoount')
+const profileuser = document.querySelector('.profileuser')
 
-axios.get('/api/users/sitting').then(response=>{
-  console.log(response.data);
-  userNameAcoount.textContent = response.data[0].username;
-
+userSettings.addEventListener('click',()=>{
+  userSettings.href = `/setting/${userData.id}`
 })
 
-axios.get('/api/users/sitting').then(response => {
-  username.value = response.data[0].username;
-  email.value = response.data[0].email;
-  photo.value = response.data[0].photo;
-  date.value = response.data[0].date;
-  country.value = response.data[0].country;
-  phone.value = response.data[0].phone;
-  address.value = response.data[0].address;
+axios.get('/api/auth/userdata').then(response => {
+  username.value = response.data.data.username;
+  email.value = response.data.data.email;
+  photo.value = response.data.data.photo;
+  country.value = response.data.data.country;
 })
 
 uncheckedIcon.forEach(icon => {
   icon.addEventListener('click', () => {
+
     username.removeAttribute('disabled')
     email.removeAttribute('disabled')
     photo.removeAttribute('disabled')
-    date.removeAttribute('disabled')
     country.removeAttribute('disabled')
-    phone.removeAttribute('disabled')
-    address.removeAttribute('disabled')
+
   })
+
 })
+
 checkedIcon.forEach(icon => {
+
   icon.addEventListener('click', () => {
     username.setAttribute('disabled', true)
     email.setAttribute('disabled', true)
     photo.setAttribute('disabled', true)
-    date.setAttribute('disabled', true)
     country.setAttribute('disabled', true)
-    phone.setAttribute('disabled', true)
-    address.setAttribute('disabled', true)
     const data = {
       username: username.value,
       email: email.value,
       photo: photo.value,
-      date: date.value,
       country: country.value,
-      phone: phone.value,
-      address: address.value
     }
-    axios.put('/api/users/update', data)
-
-
+    axios.put('/api/auth/', data)
   })
 })
 
 
-changePasswordForm.addEventListener('submit',(e)=>{
-  e.preventDefault()
+changePasswordForm.addEventListener('submit', (e) => {
 
+  e.preventDefault()
   const obj = new FormData(changePasswordForm);
-	const data = Object.fromEntries(obj)
-  console.log(data);
-  axios.put('/api/users/resetPassword',data).then(response=>console.log(response))
+  const data = Object.fromEntries(obj)
+  if(data.password === '' || data.newPassword === ''){
+    return 
+  }else{
+    axios.put('/api/auth/resetPassword', data).then(response => console.log(response))
+
+  }
+
 })

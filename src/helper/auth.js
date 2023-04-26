@@ -1,19 +1,33 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
+const { getUserByIdQuery } = require("../database/query/users");
 
 const auth = (req, res, next) => {
-  const token = req.cookies.token;
-  if (token) {
-      jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-          if (err) {
-              res.json({ message: "Error" })
-          } else {
-              req.user = decoded;
-              next()
-          }
-      })
-  } else {
-      res.json("error")
+  const accessToken = req.cookies.accessToken;
+  if (!accessToken) {
+    return res.status(401).json({
+      message: "You are not authorized to access this route",
+    });
   }
-}
 
-module.exports = auth
+  const userId = jwt.verify(accessToken, process.env.JWT_SECRET);
+
+  getUserByIdQuery({ userId })
+    .then((data) => {
+      if (!data.rows.length) {
+        return res.status(401).json({
+          message: "You are not authorized to access this route",
+        });
+      }
+
+      req.user = {
+        id: data.rows[0].id,
+        username: data.rows[0].username,
+        email: data.rows[0].email,
+      };
+
+      next();
+    })
+    .catch((error) => next(error));
+};
+
+module.exports = { auth };

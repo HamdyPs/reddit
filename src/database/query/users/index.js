@@ -1,103 +1,78 @@
-const connection = require('../../config');
+const connection = require("../../config");
 
-
-const signUpUserQuery = (userData) => {
-  const { username, email, password, photo, date, country, role, phone, address,question,answer } = userData;
-
+const getUserByUsernameQuery = ({ username }) => {
   const sql = {
-    text: `INSERT INTO users (username, email ,password ,photo, date, country, role, phone,address,question,answer)
-     VALUES ($1 , $2, $3, $4, $5, $6, $7, $8, $9,$10,$11)`,
-    values: [username, email, password, photo, date, country, role, phone, address,question,answer]
-  }
-
-  return connection.query(sql)
-};
-const signInUserQuery = (userData) => {
-  const { username } = userData;
-
-  const sql = {
-    text: `SELECT id,username, email,password, photo FROM users where username=$1`,
-    values: [username]
-  }
-
-  return connection.query(sql)
-};
-const getUserQuery = (userId) => {
-
-  let userDataQuery = `SELECT id,username, email,password, photo, date, country, phone, address FROM users`
-  if(userId){
-    userDataQuery += ` where users.id = $1`
-  }
-
-  const sql = {
-    text: userDataQuery,
-    values: userId ? [userId] : []
-  }
-
-  return connection.query(sql)
-};
-const getUserDataQuery = (email) => {
-
-  let userDataQuery = `SELECT id,username, email,password, photo, date, country, phone, address,question,answer FROM users WHERE users.email = $1`
-
-  const sql = {
-    text: userDataQuery,
-    values: [email]
-  }
-
-  return connection.query(sql)
+    text: `SELECT * FROM users WHERE username = $1 LIMIT 1`,
+    values: [username],
+  };
+  return connection.query(sql);
 };
 
-const forgotPasswordQuery = (newPassword,email)=>{
+const getUserByIdQuery = ({ userId }) => {
   const sql = {
-    text: `update users set password = $1 where users.email = $2`,
-    values: [newPassword,email]
-  }
+    text: `SELECT * FROM users WHERE id = $1 LIMIT 1`,
+    values: [userId],
+  };
+  return connection.query(sql);
+};
+const getUserByEmailQuery = (email) => {
+  const sql = {
+    text: `SELECT * FROM users WHERE email = $1 LIMIT 1`,
+    values: [email],
+  };
+  return connection.query(sql);
+};
 
-  return connection.query(sql)
-}
-
-const updateUserQuery = ({ username, email, photo, date, country, phone, address }, userId) => {
+const updateUserQuery = ({ username, email, photo, country }, { userId }) => {
+  console.log({ username, email, photo, country }, { userId });
 
   const sql = {
     text: `update users set
     username = $1,
     email = $2,
     photo = $3,
-    date = $4,
-    country = $5,
-    phone = $6,
-    address = $7
-    where id = $8`,
-    values: [username, email, photo, date, country, phone, address, userId]
+    country = $4
+    where id = $5`,
+    values: [username, email, photo, country, userId]
   }
 
   return connection.query(sql)
 }
-const updatePasswordQuery = ( newPassword , userId) => {
+
+const updatePasswordQuery = (hashPassword, { userId }) => {
 
   const sql = {
     text: `update users set
     password = $1
     where id = $2`,
-    values: [newPassword, userId]
+    values: [hashPassword, userId]
   }
 
   return connection.query(sql)
 }
 
-const addFriendQuery = (userId,friendId)=>{
-  let addFriendQuery = 'insert into friends (user_id,friend_id) values ($1,$2)'
-
-  const sql ={
-    text:addFriendQuery,
-    values:[userId,friendId]
+const forgotPasswordQuery = (hashPassword,email)=>{
+  const sql = {
+    text: `update users set password = $1 where users.email = $2`,
+    values: [hashPassword,email]
   }
 
   return connection.query(sql)
-
 }
 
+const getUserQuestionsQuery = ()=>{
+  const sql = {
+    text: `SELECT users.question FROM users`,
+  };
+  return connection.query(sql);
+}
 
-
-module.exports = { signUpUserQuery, signInUserQuery, getUserQuery,getUserDataQuery, updateUserQuery,updatePasswordQuery,addFriendQuery,forgotPasswordQuery };
+module.exports = {
+  getUserByUsernameQuery,
+  getUserByIdQuery,
+  updateUserQuery,
+  updatePasswordQuery,
+  forgotPasswordQuery,
+  getUserByEmailQuery,
+  getUserQuestionsQuery,
+};

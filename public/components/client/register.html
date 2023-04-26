@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/partial/nav.css">
+    <link rel="stylesheet" href="../css/register.css">
+
+</head>
+
+<body>
+    <nav>
+
+        <div class="logoDiv">
+            <a href="/">
+              <img id="nav-logo" alt="logo" src="../assets/logo.svg" />
+          </a>
+            <h2>Reddit</h2>
+          </div>
+
+
+        <div id="nav-actions">
+            <a href="/signin" id="nav-login-btn">Login</a>
+            <a href="#" id="nav-profile-link">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </nav>
+
+
+    <main>
+        <form id="register-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="photo">Photo:</label>
+            <input type="text" id="photo" name="photo"><br>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" required><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+
+            <label for="securityQuestion">Security question:</label>
+            <input type="text" id="securityQuestion" name="securityQuestion" required><br>
+
+            <label for="securityAnswer">Security answer:</label>
+            <input type="text" id="securityAnswer" name="securityAnswer" required><br>
+
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required><br>
+
+            <input type="submit" value="Sign Up">
+        </form>
+
+
+    </main>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
+    <script defer src="/js/register.js"></script>
+    <!-- <script src="./js/home.js"></script> -->
+</body>
+
+</html>
