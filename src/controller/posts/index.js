@@ -1,117 +1,111 @@
-// const postSchema = require('../../schema/posts.schema')
-const { createPostQuery, getPostsQuery,getUsersPostsQuery, deletePostQuery, getPostQuery, commentQuery, countryPostsQuery, createSubredditQuery,getSubredditNamesQuery,getSubredditPostsQuery } = require('../../database/query/posts')
-const createPost = (req, res) => {
+const {
+  createPostQuery,
+  getPostsQuery,
+  getPostsBySubredditQuery,
+  getPostsByUserQuery,
+  getPostByIdQuery,
+  getPostByCountryQuery,
+  deletePostQuery,
+} = require("../../database/query/posts");
 
-  const { title, description, photo,subredditTitle } = req.body;
-  const { user } = req;
-  createPostQuery({ title, description, photo,subredditTitle }, user)
-  .then(() => {res.status(201).json('your post has created succssfully')})
+const createPost = (req, res, next) => {
+  const { title, body, subredditId, image } = req.body;
+  const { id } = req.user;
 
-}
-
-const getUserPosts = (req, res) => {
-  const { user } = req;
-
-  getPostsQuery(user.providerID)
+  createPostQuery({ title, body, userId: id, subredditId, image })
     .then((data) => {
-      res.status(200).json(data.rows)
+      res.status(201).json({
+        message: "Post created successfully",
+        post: data.rows[0],
+      });
     })
-}
+    .catch((error) => next(error));
+};
 
+const getPosts = (req, res, next) => {
+  const { page = 1 } = req.query;
 
-const getUsersPosts = (req, res) => {
-  const userId= req.params.userId;
-
-  getUsersPostsQuery(userId)
+  getPostsQuery({ page })
     .then((data) => {
-      res.status(200).json(data.rows)
+      res.status(200).json({
+        message: "Posts retrieved successfully",
+        posts: data.rows,
+      });
     })
-}
+    .catch((error) => next(error));
+};
 
-const getPost = (req, res) => {
-  const postId = req.params.postId
+const getPostsBySubreddit = (req, res, next) => {
+  const { page = 1 } = req.query;
+  const { subredditId } = req.params;
 
-  getPostQuery(postId)
-    .then((postData) => {
-      commentQuery(postId).then((commentsData) => {
-        if (postData.rowCount > 0) {
-          postData.rows[0].comments = commentsData.rows
-          res.status(200).json(postData.rows[0])
-        } else {
-          res.status(404).json('post doesnt exist')
-        }
-
-      })
-        .catch((error) => {
-          console.log(error);
-        })
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-}
-
-const getPosts = (req, res) => {
-  getPostsQuery()
+  getPostsBySubredditQuery({ page, subredditId })
     .then((data) => {
-      res.status(200).json(data.rows)
+      res.status(200).json({
+        message: "Posts retrieved successfully",
+        posts: data.rows,
+      });
     })
-}
+    .catch((error) => next(error));
+};
+
+const getPostsByUser = (req, res, next) => {
+  const { page = 1 } = req.query;
+  const { userId } = req.params;
+
+  getPostsByUserQuery({ page, userId })
+    .then((data) => {
+      res.status(200).json({
+        message: "Posts retrieved successfully",
+        posts: data.rows,
+      });
+    })
+    .catch((error) => next(error));
+};
+
+const getPostById = (req, res, next) => {
+  const { postId } = req.params;
 
 
-const countryPosts = (req, res) => {
-  const country = req.params.country
+  getPostByIdQuery({ postId })
+    .then((data) => {
+      res.status(200).json({
+        message: "Post retrieved successfully",
+        post: data.rows[0],
+      });
+    })
+    .catch((error) => next(error));
+};
 
-  countryPostsQuery(country).then(data => {
-    if (data.rowCount > 0) {
-      res.status(200).json(data.rows)
-      return
-    }
-    res.status(401).json('there is no posts from this country')
+const getPostByCountry = (req, res) => {
+  const { country } = req.params;
+  const { page = 1 } = req.query;
+
+
+  getPostByCountryQuery({ country, page }).then(data => {
+    res.status(200).json({
+      message: "Post retrieved successfully",
+      post: data.rows,
+    });
   })
-}
-const namePosts = (req, res) => {
-  const postName = req.params.postname
-
-  console.log(postName);
-
-  countryPostsQuery(postName).then(data => {
-    console.log(data.rows);
-    if (data.rowCount > 0) {
-      res.status(200).json(data.rows)
-      return
-    }
-    res.status(401).json('there is no posts with this name')
-  })
+  .catch((error) => next(error));
 }
 
-const deletePost = (req, res) => {
-  const postId = req.params.postId
-  deletePostQuery(postId)
-    .then(() => res.status(200).json({
-      message: 'your post has deleted succssfully'
-    }))
+const deletePost = (req, res,next)=>{
+  const postId = req.params.postId;
+
+  deletePostQuery(postId).then(data=> res.status(200).json({
+    message: 'your post has deleted successfully'
+  }))
+  .catch(error=>next(error))
 }
 
-const getSubredditNames = (req, res)=>{
-  getSubredditNamesQuery().then(response=> res.status(200).json(response.rows))
-}
-
-const createSubreddit = (req, res) => {
-  const {subredditTitle} = req.body;
-  console.log(subredditTitle);
-  const {user}= req;
-
-  createSubredditQuery(subredditTitle,user.providerID).then(response => {
-    res.status(201).json('this Subreddit has been created successfuly')
-  })
-}
-
-const getSubredditPosts = (req ,res)=>{
-  const subredditTitle = req.params.subreditTitle
-  console.log(subredditTitle);
-
-  getSubredditPostsQuery(subredditTitle).then(response=>res.status(200).json(response.rows))
-}
-
-module.exports = { createPost, getUserPosts,getUsersPosts, getPosts, deletePost, getPost, countryPosts, namePosts,createSubreddit,getSubredditNames,getSubredditPosts }
+module.exports = {
+  createPost,
+  getPosts,
+  getPostsBySubreddit,
+  getPostsByUser,
+  getPostById,
+  getPostByCountry,
+  deletePost,
+};

@@ -1,3 +1,5 @@
+
+
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
@@ -7,6 +9,9 @@ const signUpMsg = document.querySelector('.signUpMsg');
 const toast = document.querySelector('.toast');
 const wholetoast = document.querySelector('.wholetoast');
 const signinResponse = document.querySelector('.signinResponse');
+const passwordDivBtn = document.querySelector('.passwordDivBtn');
+const forgotPasswordForm = document.querySelector('.forgotPasswordForm');
+const questions = document.querySelector('.questions');
 
 signUpButton.addEventListener('click', () => {
 	container.classList.add("right-panel-active");
@@ -20,28 +25,30 @@ signUpForm.addEventListener('submit', (e) => {
 	e.preventDefault()
 	const obj = new FormData(signUpForm);
 	const data = Object.fromEntries(obj)
-	axios.post('/api/users/signup',data)
-		.then(result => result.json()).then((data) => {
+	axios.post('/api/auth/signup',data)
+		.then((data) => {
 			signUpMsg.textContent = data.data.data
 
 		})
 		.catch(console.log)
 })
+
 signinForm.addEventListener('submit', (e) => {
 	e.preventDefault()
 	const obj = new FormData(signinForm);
 	const data = Object.fromEntries(obj)
-	console.log(data);
 	if (data.username === '' || data.password === '') {
 		toastError(data)
 		return
-
 	} else if (data.username === '' && data.password === '') {
 		toastError(data)
 		return
 	} else {
-		axios.post('/api/users/signin', data)
-			.then(() => signinResponse.textContent = 'welcome to our website')
+		axios.post('/api/auth/signin', data)
+			.then(() => {
+				signinResponse.textContent = 'welcome to our website'
+				window.location.replace('/')
+		})
 			.catch(console.log)
 	}
 
@@ -74,3 +81,27 @@ const toastError = (data) => {
 		wholetoast.removeChild(div)
 	}, 3500)
 }
+
+passwordDivBtn.addEventListener('click',()=>{
+	forgotPasswordForm.style.visibility = 'visible'
+	axios.get('/api/auth/questions').then(response=>{
+		console.log(response.data.data);
+		response.data.data.forEach(data=>{
+			const option = document.createElement('option');
+			option.textContent = data.question
+			questions.appendChild(option)
+		})
+	})
+	forgotPasswordForm.addEventListener('submit',(e)=>{
+		e.preventDefault()
+		const obj = new FormData(forgotPasswordForm)
+		const data = Object.fromEntries(obj)
+
+		axios.post('/api/auth/forgotPassword', data).then(response=>{
+			console.log(response);
+			forgotPasswordForm.style.visibility = 'hidden'
+
+		})
+	})
+})
+

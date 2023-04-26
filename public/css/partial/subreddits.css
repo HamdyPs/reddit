@@ -1,0 +1,69 @@
+#main-subreddit-list {
+  padding-top: 80px;
+}
+
+#main-subreddit-list > h2 {
+  color: rgb(187, 187, 187);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+#main-subreddit-list > ul {
+  list-style: none;
+  padding: 0;
+}
+
+#main-subreddit-list > ul > li, #friends-list  > li, #friend-request-list > li {
+  margin-bottom: 0.5rem;
+}
+
+#main-subreddit-list > ul > li > a, #friends-list  > li,#friend-request-list > li {
+  color: rgb(187, 187, 187);
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease-in-out;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* #main-subreddit-list > ul > li > a > div{
+  display: flex;
+} */
+
+#main-subreddit-list > h2 {
+  padding-left: 1rem;
+}
+
+#main-subreddit-list > ul > li > a:hover {
+  background-color: white;
+  color: #030303;
+}
+
+#main-subreddit-list > ul > li > a > img {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  margin-right: 0.7rem;
+}
+
+
+#friends-list{
+    list-style: none;
+  padding: 0;
+  display: none;
+}
+#friend-request-list{
+    list-style: none;
+  padding: 0;
+  display: none;
+}
+
+.show{
+  display: block;
+}
+
+
+

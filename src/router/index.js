@@ -1,16 +1,18 @@
-const userRouter = require('./user');
-const postsRouter = require('./posts');
-const commentsRouter = require('./comments');
-const apiRouter = require('./apis');
-// const { clientError, serverError } = require('../controller/error/error');
+const router = require("express").Router();
 
-const router = require('express').Router();
+const authRoutes = require("./user");
+const subredditRoutes = require("./subreddit");
+const postRoutes = require("./posts");
+const voteRoutes = require("./vote");
+const commentRoutes = require("./comments");
+const friendRoutes = require("./friend");
+const { auth } = require("../helper/auth");
 
-router.use('/users', userRouter)
-router.use('/posts', postsRouter)
-router.use('/comments', commentsRouter)
-router.use('/apis', apiRouter)
-// router.use(clientError);
-// router.use(serverError);
+router.use("/auth", authRoutes);
+router.use("/subreddit", subredditRoutes);
+router.use("/post", postRoutes);
+router.use("/vote", voteRoutes);
+router.use("/comment", commentRoutes);
+router.use("/friend", auth, friendRoutes);
 
-module.exports = router
+module.exports = router;

@@ -1,19 +1,16 @@
-const userRouter = require('express').Router();
-const { signUp, signin, getSignUpPage,getProfilePage, getUserData,getSettingPage, updateUserData,updatePasswordUser,getSubredditsPage,getProfilesPage,addFriend,forgotPassword} = require('../../controller/users')
-const auth = require('../../helper/auth');
+const router = require("express").Router();
 
-userRouter.post('/signup', signUp);
-userRouter.post('/signin', signin);
-userRouter.get('/resgister', getSignUpPage)
-userRouter.get('/profile',auth, getProfilePage)
-userRouter.get('/profiles/:userId',auth, getProfilesPage)
-userRouter.get('/profileSitting',auth, getSettingPage)
-userRouter.get('/sitting',auth, getUserData)
-userRouter.put('/update',auth, updateUserData)
-userRouter.put('/resetPassword',auth, updatePasswordUser)
-userRouter.get('/subreddits/:subrditTitle', getSubredditsPage)
-userRouter.get('/user/:friendId',auth, addFriend)
-userRouter.post('/forgotPassword',forgotPassword)
+const { signup, signin, getUserData, updateUserData, forgotPassword, updatePasswordUser,getUserQuestions,logOut } = require("../../controller/users");
+const { auth } = require("../../helper/auth");
+
+router.post("/signup", signup);
+router.post("/signin", signin);
+router.get("/userdata", auth, getUserData);
+router.put("/", auth, updateUserData);
+router.put("/resetPassword", auth, updatePasswordUser);
+router.post('/forgotPassword', forgotPassword)
+router.get('/questions', getUserQuestions)
+router.get('/logout',logOut)
 
 
-module.exports = userRouter
+module.exports = router;

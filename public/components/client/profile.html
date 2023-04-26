@@ -1,111 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../css/profile.css">
-  <link rel="stylesheet" href="../../css/home.css">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/partial/main.css">
+    <link rel="stylesheet" href="../css/partial/nav.css">
+    <link rel="stylesheet" href="../css/partial/card.css">
+    <link rel="stylesheet" href="../css/partial/subreddits.css">
+    <link rel="stylesheet" href="../css/partial/postsList.css">
+    <title>reddit</title>
 </head>
+
 <body>
-  <nav>
-    <div class="profile">
-    <div class="profile-icon">
-      <i class="fa-brands fa-reddit"></i>
-      <i class="fa-solid fa-arrow-down"></i>
-    </div>
-    </div>
-    <div class="searchbar">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" class="search-inp" placeholder="search reddit">
-    </div>
-
-    <div class="userLogo">
-      <img src="../../logo.png" alt="user photo">
-      <h3 class="userNameAcoount">username</h3>
-    </div>
-    
-  </nav>
-  <main>
-    <div class="sidebar">
-      <div class="searchPost">
-        <input type="text" placeholder="filter">
-      </div>
-
-        <ul class="feeds">
-          <li><a href="/"><i class="fa-solid fa-house"></i>home</a></li>
-          <li><a href="/api/users/profile"><i class="fa-solid fa-house"></i>profile</a></li>
-          <li><a href="#"><i class="fa-solid fa-fire"></i>Popular</a></li>
-          <li><a href="#"><i class="fa-solid fa-reply-all"></i>All</a></li>
-        </ul>
-
-        <ul class="others">
-          <li><a href="/api/users/profileSitting"><i class="fa-brands fa-reddit"></i>user Settings</a></li>
-          <li class="createPost"><a href="#"><i class="fa-solid fa-plus"></i>create post</a></li>
-        </ul>
-  
-    </div>
-
-    <div class="profileUser">
-      <div class="prfileHeader">
-
-        <div class="wallpaper">
-          <img src="../../logo.png" alt="wallpaper">
-        </div>
-
-        <div class="userDetails">
-
-          <div class="userImg">
-            <img src="../../logo.png" alt="userImg">
+    <!-- Navigation Start -->
+    <nav>
+        <div class="logoDiv">
+            <a href="/">
+              <img id="nav-logo" alt="logo" src="../assets/logo.svg" />
+          </a>
+            <h2>Reddit</h2>
           </div>
 
-          <div class="userInfo">
-            <h2 class="userNameProfile"></h2>
-            <button>add friend</button>
-          </div>
 
+        <div>
+            <form id="nav-search-form">
+                <input type="text" placeholder="Search" />
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
         </div>
 
-      </div>
+        <div id="nav-actions">
+            <a href="/signin" id="nav-login-btn">Login</a>
+            <a href="/" id="nav-logout-btn">logOut</a>
 
-        <div class="allUserPosts">
- 
+            <a class="profileUser" href="" id="nav-profile-link">
+                <i class="fas fa-user-circle"></i>
+                <span class="userAcountName"></span>
+            </a>
         </div>
-      </div>
-    </div>
-  </main>
-  <div class="userCreatePostDiv">
-    <div class="signupSection">
-      <div class="info">
-        <h2>create your post</h2>
-      </div>
-      <form class="createPostForm">
-        <h2>Sign Up</h2>
-        <ul class="noBullet">
-          <li>
-            <input type="text" class="inputFields"  name="title" placeholder="title" />
-          </li>
-          <li>
-            <textarea cols="30" rows="10" type="text" class="inputFields"  name="description" placeholder="description"/></textarea>
-          </li>
-          <li>
-            <input type="text" class="inputFields"  name="photo" placeholder="photo"/>
-          </li>
-          <li class="selectPost">
+    </nav>
 
-          </li>
-          <li id="center-btn">
-            <button type="submit" id="join-btn">submit</button>
-          </li>
-        </ul>
-      </form>
-    </div>
-  </div>
+    <!-- Navigation End -->
 
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Main Start -->
+    <main>
 
-  <script src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
-  <script src="../../js/profile.js"></script>
+        <section id="main-subreddit-list">
+            <h2>user options</h2>
+
+            <ul>
+                <li>
+                    <a class="userSettings" href="#">
+                        <img src="../assets/logo.svg" />
+                        user settings
+                    </a>
+                </li>
+                <li>
+                    <a class="createPostBtn"  href="">
+                        <img src="../assets/logo.svg" />
+                        create post
+                    </a>
+                </li>
+                <li>
+                    <form class="createPostForm">
+                        <input type="text" name="title" placeholder="title">
+                        <input type="text" name="body" placeholder="content">
+                        <input type="text" name="image" placeholder="image">
+                        <select name="subredditId" class="select">
+                            
+                        </select>
+                        <button type="submit">create</button>
+                    </form>
+                </li>
+                <li>
+                    <a class="friends-list-btn" href="#">
+                        <img src="../assets/logo.svg" />
+                        friends
+                    </a>
+                </li>
+                <li>
+                    <ul id="friends-list"></ul>
+
+                </li>
+                <li>
+                    <a class="friends-request-list-btn" href="">
+                            <img src="../assets/logo.svg" />
+                            friends requests
+                    </a>
+                </li>
+                <li>
+                    <ul id="friend-request-list"></ul>
+
+                </li>
+            </ul>
+        </section>
+
+
+
+        <!-- Feed start -->
+        <section id="main-posts-feed">
+
+            <div id="main-posts-list">
+            </div>
+            <button id="load-more">Load More</button>
+
+        </section>
+        <!-- Feed end -->
+    </main>
+
+    <!-- Main End -->
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="https://kit.fontawesome.com/9a8ddb3d78.js" crossorigin="anonymous"></script>
+    <script defer src="/js/util/renderPosts.js"></script>
+    <script defer src="/js/util/userData.js"></script>
+    <script defer src="/js/profile.js"></script>
 </body>
+
 </html>

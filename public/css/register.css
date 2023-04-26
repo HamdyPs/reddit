@@ -1,0 +1,70 @@
+main {
+  min-height: 100vh;
+  background: #030303;
+  padding-top: 4rem;
+  overflow: hidden;
+}
+
+h1 {
+  color: #1a1a1b;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+#register-form {
+  background-color: #171616;
+  border-radius: 4px;
+  margin: 32px auto;
+  padding: 32px;
+  max-width: 50%;
+}
+
+#register-form > label {
+  color: #f2f2f3;
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#register-form > input{
+    background-color: #484848;
+  border: 1px solid #060606;
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  height: 40px;
+  line-height: 1.5;
+  padding: 8px;
+  width: 100%;
+  color: #fff;
+}
+
+
+#register-form > input[type="submit"] {
+  background-color: #ff4500;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  height: 40px;
+  line-height: 1.5;
+  margin-top: 24px;
+  padding: 0 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease-in-out;
+  width: 100%;
+}
+
+#register-form > input[type="submit"]:hover {
+  background-color: #005eb8;
+}

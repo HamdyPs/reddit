@@ -1,74 +1,70 @@
-const connection = require('../../config');
+const connection = require("../../config");
 
-
-const createCommentQuery = (content, userId, postId) => {
-
+const createCommentQuery = ({ body, userId, postId }) => {
   const sql = {
-    text: `INSERT INTO comments
-     ( content, user_id, post_id)
-     VALUES ($1 , $2, $3 )`,
-    values: [content, userId, postId]
-  }
-
-  return connection.query(sql)
-};
-const addVoteQuery = ( userId, postId) => {
-  const sql = {
-    text: `INSERT INTO votes
-     (user_id, post_id)
-     VALUES ($1 , $2)`,
-    values: [userId, postId]
-  }
-
-  return connection.query(sql)
+    text: `INSERT INTO comments (body, user_id, post_id) VALUES ($1, $2, $3) RETURNING *`,
+    values: [body, userId, postId],
+  };
+  return connection.query(sql);
 };
 
-const votePostQuery = (postId) => {
-  let voteQuery = `select
-  u.username,
-  u.photo,
-  v.user_id,
-  v.post_id
-    from votes v
-    join users u
-    on v.user_id = u.id
-    where v.post_id = $1`
-  const voteSql = {
-    text: voteQuery,
-    values: [postId]
-  }
-  return connection.query(voteSql)
-}
-const deleteVoteQuery = (postId,userId) => {
-  
-  let removevote = `DELETE FROM votes where votes.user_id = $1 and votes.post_id = $2`
-  const voteSql = {
-    text: removevote,
-    values: [userId,postId]
-  }
-  return connection.query(voteSql)
-}
+// const createDummyData = () => {
+//   const bodyList = [
+//     "test one",
+//     "test two",
+//     "test three",
+//     "test four",
+//     "test five",
+//     "test six",
+//     "test seven",
+//   ];
 
-const getCommentsQuery = (postId)=>{
-  let commentQuery = `select
-c.content,
-c.user_id,
-c.post_id,
-c.created_at,
-p.id,
-u.username
-from comments c
-join posts p 
-on p.id = c.post_id
-join users u
-on u.id = c.user_id
-where p.id = $1`
-  const commentSql = {
-    text: commentQuery,
-    values: [postId]
-  }
-  return connection.query(commentSql)
-}
+//   const userIdList = [1, 2, 3, 4, 5, 6, 7];
+//   const postIdList = [1, 2, 3, 4, 5, 6, 7];
 
+//   for (let i = 0; i < 7; i++) {
+//     createCommentQuery({
+//       body: bodyList[i],
+//       userId: userIdList[i],
+//       postId: postIdList[i],
+//     })
+//       .then((data) => {
+//         console.log(data.rows[0]);
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+// createDummyData();
 
-module.exports = { createCommentQuery, addVoteQuery, votePostQuery,getCommentsQuery,deleteVoteQuery }
+const getCommentsByPostIdQuery = ({ page, postId }) => {
+  const limit = 10;
+  const offset = page * limit - limit;
+
+  const sqlQuery = `
+  SELECT
+      c.id,
+      u.username,
+      c.body,
+      c.user_id
+  FROM comments c
+      JOIN users u ON u.id = c.user_id
+  WHERE c.post_id = $1
+  GROUP BY
+      c.id,
+      u.username,
+      c.body,
+      c.user_id
+  ORDER BY id DESC LIMIT $2 OFFSET $3
+  `;
+
+  const sql = {
+    text: sqlQuery,
+    values: [postId, limit, offset],
+  };
+  return connection.query(sql);
+};
+
+module.exports = {
+  createCommentQuery,
+  getCommentsByPostIdQuery,
+};
